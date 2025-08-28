@@ -1,0 +1,7 @@
+{
+  "name": "pololitosApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
