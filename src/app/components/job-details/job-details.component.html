@@ -1,0 +1,39 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismissModal()">
+        <lucide-icon name="x"></lucide-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="content-wrapper">
+    <div class="job-header">
+      <ion-chip color="primary">{{ job.category }}</ion-chip>
+      <h1>{{ job.title }}</h1>
+      <div class="metadata">
+        <div class="location">
+          <lucide-icon name="map-pin" size="16"></lucide-icon>
+          <span>{{ job.location }}</span>
+        </div>
+        <div class="price">{{ job.price }}</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="job-description">
+      <h2>Descripción</h2>
+      <p>{{ job.description }}</p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+  <ion-button expand="block" (click)="contact()">
+    Contactar
+    <lucide-icon name="send" slot="end"></lucide-icon>
+  </ion-button>
+</ion-footer>

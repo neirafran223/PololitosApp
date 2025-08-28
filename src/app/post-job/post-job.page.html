@@ -1,0 +1,53 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Publicar un Pololito</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closePage()">
+        
+        <lucide-icon name="x"></lucide-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <form [formGroup]="postJobForm" (ngSubmit)="onSubmit()">
+    <ion-list lines="none">
+      <ion-item>
+        <lucide-icon name="type" slot="start"></lucide-icon>
+        <ion-input label="Título del Pololito" labelPlacement="stacked" formControlName="title"
+          placeholder="Ej: Necesito jardinero para mi casa"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <lucide-icon name="list" slot="start"></lucide-icon>
+        <ion-select label="Categoría" labelPlacement="stacked" formControlName="category"
+          placeholder="Selecciona una categoría">
+          <ion-select-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <lucide-icon name="pen-square" slot="start"></lucide-icon>
+        <ion-textarea label="Descripción" labelPlacement="stacked" formControlName="description"
+          placeholder="Describe en qué consiste el trabajo..." [autoGrow]="true"></ion-textarea>
+      </ion-item>
+
+      <ion-item>
+        <lucide-icon name="dollar-sign" slot="start"></lucide-icon>
+        <ion-input label="Precio / Presupuesto" labelPlacement="stacked" formControlName="price"
+          placeholder="$25.000" type="text" inputmode="numeric"></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <lucide-icon name="map-pin" slot="start"></lucide-icon>
+        <ion-input label="Ubicación" labelPlacement="stacked" formControlName="location"
+          placeholder="Ej: Viña del Mar"></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <ion-button class="submit-button" expand="block" (click)="onSubmit()" [disabled]="postJobForm.invalid">
+      Publicar Pololito
+    </ion-button>
+  </form>
+</ion-content>

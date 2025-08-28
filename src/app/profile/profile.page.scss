@@ -1,0 +1,53 @@
+ion-toolbar {
+    --background: var(--ion-toolbar-background);
+  }
+  
+  ion-title {
+    font-weight: 700;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  
+    ion-avatar {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 16px;
+    }
+  
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+  
+    p {
+      margin: 4px 0 0;
+      font-size: 1rem;
+      color: var(--ion-color-medium);
+      opacity: 0.7;
+    }
+  }
+  
+  ion-item-divider {
+    --background: var(--ion-toolbar-background);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+  
+  ion-item {
+    --background: var(--ion-item-background);
+    --padding-start: 16px;
+  
+    lucide-icon {
+      margin-right: 16px;
+      color: var(--ion-color-primary);
+    }
+  }

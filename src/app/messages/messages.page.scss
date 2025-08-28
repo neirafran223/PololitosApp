@@ -1,0 +1,77 @@
+// Estilos para la cabecera
+ion-toolbar {
+    --background: var(--ion-toolbar-background);
+  }
+  
+  ion-title {
+    font-weight: 700;
+  }
+  
+  // Estilo para la barra de búsqueda
+  ion-searchbar {
+    --background: var(--ion-item-background);
+    --border-radius: 12px;
+    --box-shadow: none;
+    --color: #FFFFFF;
+    margin-bottom: 16px;
+    padding: 0;
+  }
+  
+  // Estilo para el título de la lista ("Recientes")
+  ion-list-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    padding-left: 0;
+  }
+  
+  // Contenedor de la lista
+  ion-list {
+    background: transparent;
+    padding: 0;
+  }
+  
+  // Estilo para cada item de conversación
+  ion-item {
+    --background: var(--ion-item-background);
+    --padding-start: 12px;
+    --inner-padding-end: 12px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+  }
+  
+  // Estilos para el texto dentro de cada item
+  ion-label {
+    h2 {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--ion-text-color);
+    }
+  
+    h3 {
+      font-size: 0.8rem;
+      color: var(--ion-color-medium);
+      opacity: 0.8;
+    }
+  
+    p {
+      font-size: 0.9rem;
+      color: var(--ion-color-medium);
+      opacity: 0.6;
+    }
+  }
+  
+  // Contenedor para la fecha y el contador de no leídos
+  .metadata-end {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    font-size: 0.75rem;
+  
+    ion-badge {
+      min-width: 22px;
+      height: 22px;
+      font-weight: 600;
+    }
+  }

@@ -1,0 +1,20 @@
+<ion-card button="true" class="job-card">
+  <ion-card-header>
+    <div class="header-wrapper">
+      <ion-card-title>{{ job.title }}</ion-card-title>
+      <ion-chip>{{ job.category }}</ion-chip>
+    </div>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p class="description">{{ job.description }}</p>
+    
+    <div class="metadata">
+      <div class="location">
+        <lucide-icon name="map-pin" size="14"></lucide-icon>
+        <span>{{ job.location }}</span>
+      </div>
+      <div class="price">{{ job.price }}</div>
+    </div>
+  </ion-card-content>
+</ion-card>

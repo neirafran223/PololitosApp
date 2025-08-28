@@ -1,0 +1,28 @@
+ion-toolbar {
+    --background: var(--ion-toolbar-background);
+  }
+  
+  ion-title {
+    font-weight: 700;
+  }
+  
+  ion-item {
+    --background: var(--ion-item-background);
+    --border-radius: 12px;
+    --padding-start: 12px;
+    margin-bottom: 16px;
+  
+    lucide-icon {
+      margin-right: 12px;
+      color: var(--ion-color-primary);
+    }
+  }
+  
+  ion-list {
+    background: transparent;
+  }
+  
+  .submit-button {
+    --box-shadow: none;
+    margin-top: 30px;
+  }

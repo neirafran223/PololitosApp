@@ -1,0 +1,43 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="profile-header ion-padding">
+    <ion-avatar>
+      <img [src]="user.avatar" alt="Avatar de usuario" />
+    </ion-avatar>
+    <h2>{{ user.name }}</h2>
+    <p>{{ user.username }}</p>
+  </div>
+
+  <ion-list lines="full">
+    <ion-item-divider>
+      <ion-label>Mi Actividad</ion-label>
+    </ion-item-divider>
+
+    <ion-item button="true" detail="true">
+      <lucide-icon name="edit" slot="start"></lucide-icon>
+      <ion-label>Editar Perfil</ion-label>
+    </ion-item>
+    <ion-item button="true" detail="true">
+      <lucide-icon name="layout-list" slot="start"></lucide-icon>
+      <ion-label>Mis Publicaciones</ion-label>
+    </ion-item>
+    <ion-item button="true" detail="true">
+      <lucide-icon name="heart" slot="start"></lucide-icon>
+      <ion-label>Favoritos</ion-label>
+    </ion-item>
+
+    <ion-item-divider>
+      <ion-label>Cuenta</ion-label>
+    </ion-item-divider>
+
+    <ion-item button="true" (click)="logout()">
+      <lucide-icon name="log-out" slot="start" color="var(--ion-color-danger)"></lucide-icon>
+      <ion-label color="danger">Cerrar Sesión</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

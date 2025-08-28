@@ -1,0 +1,82 @@
+ion-header {
+    ion-toolbar {
+      --background: transparent;
+    }
+  }
+  
+  ion-header::after {
+    display: none;
+  }
+  
+  ion-header.ion-no-border {
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+    background: rgba(var(--ion-background-color-rgb), 0.5);
+  }
+  
+  ion-content {
+    --background: var(--ion-background-color);
+  }
+  
+  .content-wrapper {
+    padding-top: 60px;
+  }
+  
+  .job-header {
+    h1 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-top: 8px;
+      margin-bottom: 16px;
+    }
+    ion-chip {
+      font-weight: 600;
+    }
+  }
+  
+  .metadata {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+  
+  .location {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .price {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--ion-color-primary);
+  }
+  
+  .divider {
+    height: 1px;
+    background: var(--ion-border-color);
+    margin: 24px 0;
+  }
+  
+  .job-description {
+    h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    p {
+      line-height: 1.6;
+      color: var(--ion-color-medium);
+    }
+  }
+  
+  ion-footer {
+    background: var(--ion-background-color);
+    ion-button {
+      --box-shadow: none;
+    }
+  }

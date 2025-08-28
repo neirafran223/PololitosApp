@@ -1,0 +1,37 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="location">
+        <lucide-icon name="map-pin" size="18"></lucide-icon>
+        <span>{{ userLocation }}</span>
+      </div>
+      <ion-button fill="clear" class="notification-button">
+        <lucide-icon name="bell" size="22"></lucide-icon>
+      </ion-button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="search-container">
+    <ion-searchbar 
+      [(ngModel)]="searchQuery" 
+      placeholder="¿Qué necesitas hoy?">
+    </ion-searchbar>
+  </div>
+
+  <div class="list-header">
+    <h2 class="list-title">Recomendados para ti</h2>
+    <ion-button fill="clear" class="filter-button">
+      <lucide-icon name="sliders-horizontal" size="20"></lucide-icon>
+    </ion-button>
+  </div>
+
+  <div class="jobs-list">
+    <app-job-card 
+      *ngFor="let job of jobs" 
+      [job]="job" 
+      (click)="openJobDetails(job)">
+    </app-job-card>
+  </div>
+</ion-content>

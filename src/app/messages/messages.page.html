@@ -1,0 +1,58 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title>Mensajes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-searchbar placeholder="Buscar conversaciones"></ion-searchbar>
+
+  <ion-list lines="none">
+    <ion-list-header>
+      <h2>Recientes</h2>
+    </ion-list-header>
+
+    <ion-item button="true" detail="false">
+      <ion-avatar slot="start">
+        <img alt="Avatar de usuario" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h2>Anaís Rojas</h2>
+        <h3>Jardinero para casa en Reñaca</h3>
+        <p>Hola, ¿aún está disponible el trabajo?</p>
+      </ion-label>
+      <div class="metadata-end" slot="end">
+        <ion-note>Ahora</ion-note>
+        <ion-badge color="primary">2</ion-badge>
+      </div>
+    </ion-item>
+
+    <ion-item button="true" detail="false">
+      <ion-avatar slot="start">
+        <img alt="Avatar de usuario" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h2>Benjamín Soto</h2>
+        <h3>Clases de matemáticas (online)</h3>
+        <p>Perfecto, quedamos para el martes.</p>
+      </ion-label>
+      <div class="metadata-end" slot="end">
+        <ion-note>Ayer</ion-note>
+      </div>
+    </ion-item>
+
+    <ion-item button="true" detail="false">
+      <ion-avatar slot="start">
+        <img alt="Avatar de usuario" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>
+      <ion-label>
+        <h2>Carlos Díaz</h2>
+        <h3>Necesito gásfiter urgente</h3>
+        <p>Muchas gracias, ¡excelente trabajo!</p>
+      </ion-label>
+      <div class="metadata-end" slot="end">
+        <ion-note>26/08</ion-note>
+      </div>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,25 @@
+ion-toolbar {
+    --background: var(--ion-toolbar-background);
+  }
+  
+  ion-title {
+    font-weight: 700;
+  }
+  
+  ion-item-divider {
+    --background: var(--ion-toolbar-background);
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding-top: 16px;
+    padding-bottom: 8px;
+  }
+  
+  ion-item {
+    --background: var(--ion-item-background);
+    --padding-start: 16px;
+  
+    lucide-icon {
+      margin-right: 16px;
+      color: var(--ion-color-primary);
+    }
+  }
