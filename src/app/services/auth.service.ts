@@ -10,7 +10,6 @@ export class AuthService {
   constructor(private router: Router) { }
 
   login(email: string, password: string): boolean {
-    // Simulación: cualquier email y password son válidos por ahora
     if (email && password) {
       this.currentUser = { email: email, name: email.split('@')[0] };
       return true;
@@ -19,7 +18,6 @@ export class AuthService {
   }
 
   register(name: string, email: string, password: string): boolean {
-    // Simulación: cualquier registro es exitoso
     if (name && email && password) {
       this.currentUser = { email: email, name: name };
       return true;
@@ -27,9 +25,10 @@ export class AuthService {
     return false;
   }
   
+  // --- MÉTODO CLAVE PARA CERRAR SESIÓN ---
   logout() {
-    this.currentUser = null;
-    this.router.navigate(['/login']);
+    this.currentUser = null; // Borra la información del usuario
+    this.router.navigate(['/login']); // Redirige a la página de login
   }
 
   getCurrentUser() {

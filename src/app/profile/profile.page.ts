@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service'; // 1. Importar AuthService
 
 @Component({
   selector: 'app-profile',
@@ -7,19 +8,17 @@ import { Component, OnInit } from '@angular/core';
   standalone: false,
 })
 export class ProfilePage implements OnInit {
-  user = {
-    name: 'Juan Pérez',
-    username: '@juan.perez',
-    avatar: 'https://ionicframework.com/docs/img/demos/avatar.svg'
-  };
+  user: any;
 
-  constructor() { }
+  // 2. Inyectar AuthService en el constructor
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+    this.user = this.authService.getCurrentUser();
   }
 
+  // 3. Crear el método que llamará el botón
   logout() {
-    console.log('Cerrando sesión...');
-    
+    this.authService.logout();
   }
 }
