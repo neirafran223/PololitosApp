@@ -1,19 +1,40 @@
-<ion-content class="ion-padding">
-  <div class="login-container">
-    <h1>Bienvenido de Nuevo</h1>
-    <p>Inicia sesión para continuar</p>
+<ion-content [fullscreen]="true" class="auth-background">
+  <div class="auth-container">
 
-    <ion-item>
-      <ion-input #emailInput label="Correo Electrónico" labelPlacement="stacked" type="email" value="usuario@pololitos.cl"></ion-input>
-    </ion-item>
+    <div class="auth-header">
+      <div class="auth-logo">P</div>
+      <h1 class="auth-app-title">Pololitos</h1>
+      <p class="auth-app-subtitle">Conecta con trabajos temporales</p>
+    </div>
 
-    <ion-item>
-      <ion-input #passwordInput label="Contraseña" labelPlacement="stacked" type="password" value="123456"></ion-input>
-    </ion-item>
-    
-    <ion-button (click)="login(emailInput.value, passwordInput.value)" expand="block" class="login-button">Iniciar Sesión</ion-button>
+    <div class="auth-form-card">
+      <ion-segment value="login" class="segment-tabs">
+        <ion-segment-button value="login">
+          <ion-label>Iniciar Sesión</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="register" routerLink="/register">
+          <ion-label>Registrarse</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
-    <ion-button routerLink="/forgot-password" fill="clear" expand="block">¿Olvidaste tu contraseña?</ion-button>
-    <ion-button routerLink="/register" fill="clear" expand="block">¿No tienes cuenta? Regístrate</ion-button>
+      <ion-item class="auth-item">
+        <lucide-icon name="mail" slot="start"></lucide-icon>
+        <ion-input #emailInput type="email" placeholder="Correo electrónico"></ion-input>
+      </ion-item>
+
+      <ion-item class="auth-item">
+        <lucide-icon name="lock" slot="start"></lucide-icon>
+        <ion-input #passwordInput type="password" placeholder="Contraseña"></ion-input>
+        <ion-icon name="eye-outline" slot="end"></ion-icon>
+      </ion-item>
+
+      <ion-button (click)="login(emailInput.value, passwordInput.value)" expand="block" class="main-button">
+        Iniciar Sesión
+      </ion-button>
+      
+      <ion-button routerLink="/forgot-password" fill="clear" expand="block" class="link-button">
+        ¿Olvidaste tu contraseña?
+      </ion-button>
+    </div>
   </div>
 </ion-content>

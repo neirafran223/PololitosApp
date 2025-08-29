@@ -10,6 +10,7 @@ export class AuthService {
   constructor(private router: Router) { }
 
   login(email: string, password: string): boolean {
+    // Simulación: cualquier email y password son válidos por ahora
     if (email && password) {
       this.currentUser = { email: email, name: email.split('@')[0] };
       return true;
@@ -17,10 +18,9 @@ export class AuthService {
     return false;
   }
 
-  // 👇 MÉTODO AÑADIDO PARA SOLUCIONAR EL ERROR 👇
   register(name: string, email: string, password: string): boolean {
+    // Simulación: cualquier registro es exitoso
     if (name && email && password) {
-      // Simula el registro y el inicio de sesión automático
       this.currentUser = { email: email, name: name };
       return true;
     }

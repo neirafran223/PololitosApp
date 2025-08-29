@@ -1,25 +1,55 @@
-<ion-header class="ion-no-border">
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/login"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Crear Cuenta</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="auth-background">
+  <div class="auth-container">
 
-<ion-content class="ion-padding">
-  <h1>Únete a Pololitos</h1>
-  <p>Crea tu cuenta en segundos</p>
+    <div class="auth-header">
+      <div class="auth-logo">P</div>
+      <h1 class="auth-app-title">Pololitos</h1>
+      <p class="auth-app-subtitle">Crea tu cuenta en segundos</p>
+    </div>
 
-  <ion-item>
-    <ion-input label="Nombre Completo" labelPlacement="stacked" placeholder="Juan Pérez"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input label="Correo Electrónico" labelPlacement="stacked" type="email" placeholder="tu@correo.com"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-input label="Contraseña" labelPlacement="stacked" type="password" placeholder="Mínimo 6 caracteres"></ion-input>
-  </ion-item>
+    <div class="auth-form-card">
+      <ion-segment value="register" class="segment-tabs">
+        <ion-segment-button value="login" routerLink="/login">
+          <ion-label>Iniciar Sesión</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="register">
+          <ion-label>Registrarse</ion-label>
+        </ion-segment-button>
+      </ion-segment>
 
-  <ion-button (click)="register()" expand="block" class="login-button">Registrarse</ion-button>
+      <form [formGroup]="registerForm" (ngSubmit)="register()">
+        <ion-item class="auth-item">
+          <lucide-icon name="user" slot="start"></lucide-icon>
+          <ion-input formControlName="name" placeholder="Nombre de usuario"></ion-input>
+        </ion-item>
+        <div *ngIf="shouldShowError(registerForm.get('name'))" class="error-message">
+          <ion-text color="danger" *ngIf="registerForm.get('name')?.hasError('required')">El nombre es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registerForm.get('name')?.hasError('minlength')">El nombre debe tener al menos 3 caracteres.</ion-text>
+        </div>
+
+        <ion-item class="auth-item">
+          <lucide-icon name="mail" slot="start"></lucide-icon>
+          <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
+        </ion-item>
+        <div *ngIf="shouldShowError(registerForm.get('email'))" class="error-message">
+          <ion-text color="danger" *ngIf="registerForm.get('email')?.hasError('required')">El correo es requerido.</ion-text>
+          <ion-text color="danger" *ngIf="registerForm.get('email')?.hasError('email')">El formato del correo no es válido.</ion-text>
+        </div>
+
+        <ion-item class="auth-item">
+          <lucide-icon name="lock" slot="start"></lucide-icon>
+          <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+          <ion-icon name="eye-outline" slot="end"></ion-icon>
+        </ion-item>
+        <div *ngIf="shouldShowError(registerForm.get('password'))" class="error-message">
+          <ion-text color="danger" *ngIf="registerForm.get('password')?.hasError('required')">La contraseña es requerida.</ion-text>
+          <ion-text color="danger" *ngIf="registerForm.get('password')?.hasError('minlength')">La contraseña debe tener al menos 6 caracteres.</ion-text>
+        </div>
+
+        <ion-button type="submit" expand="block" class="main-button" [disabled]="registerForm.invalid">
+          Crear Cuenta
+        </ion-button>
+      </form>
+    </div>
+  </div>
 </ion-content>

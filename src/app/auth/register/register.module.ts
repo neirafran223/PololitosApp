@@ -1,17 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
-import { RegisterPageRoutingModule } from './register-routing.module'; // <-- Importante
+import { RegisterPageRoutingModule } from './register-routing.module';
 import { RegisterPage } from './register.page';
+import { LucideAngularModule, User, Mail, Lock } from 'lucide-angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RegisterPageRoutingModule // <-- Asegúrate de que esté aquí
+    ReactiveFormsModule,
+    RegisterPageRoutingModule,
+    LucideAngularModule.pick({ User, Mail, Lock })
   ],
   declarations: [RegisterPage]
 })

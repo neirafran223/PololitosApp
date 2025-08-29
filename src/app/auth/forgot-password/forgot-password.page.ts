@@ -6,7 +6,7 @@ import { ToastController } from '@ionic/angular';
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.page.html',
   styleUrls: ['./forgot-password.page.scss'],
-  standalone:false,
+  standalone: false,
 })
 export class ForgotPasswordPage {
 
@@ -16,7 +16,6 @@ export class ForgotPasswordPage {
   ) { }
 
   async resetPassword() {
-    // a) Simulación sin base de datos
     console.log('Enviando enlace de recuperación...');
     await this.presentToast('Si tu correo está registrado, recibirás un enlace.');
     this.router.navigate(['/login']);
