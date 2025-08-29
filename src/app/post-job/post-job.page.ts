@@ -13,7 +13,7 @@ export class PostJobPage implements OnInit {
   postJobForm!: FormGroup;
   categories = ['Jardinería', 'Gasfitería', 'Electricidad', 'Aseo', 'Clases', 'Otro'];
 
-  // 2. Inyectar ToastController en el constructor
+
   constructor(
     private fb: FormBuilder,
     private navCtrl: NavController,
@@ -31,7 +31,7 @@ export class PostJobPage implements OnInit {
     });
   }
 
-  // 3. Nuevo método para mostrar el mensaje de confirmación (Toast)
+  
   async presentToast(message: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -46,25 +46,25 @@ export class PostJobPage implements OnInit {
     this.navCtrl.navigateRoot('/tabs/tab1', { animated: true, animationDirection: 'back' });
   }
 
-  // 4. Lógica de envío actualizada
+  
   onSubmit() {
     if (this.postJobForm.invalid) {
       this.postJobForm.markAllAsTouched();
       return;
     }
     
-    // Guardamos el trabajo en el servicio
+    
     this.jobService.createJob(this.postJobForm.value);
 
-    // Mostramos el mensaje de éxito
+    
     this.presentToast('¡Trabajo publicado con éxito!');
 
-    // Limpiamos el formulario
+    
     this.postJobForm.reset();
 
-    // Esperamos un momento antes de volver al inicio para que el usuario vea el mensaje
+    
     setTimeout(() => {
       this.closePage();
-    }, 1500); // 1.5 segundos de espera
+    }, 1500); 
   }
 }

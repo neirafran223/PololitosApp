@@ -1,0 +1,19 @@
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <h1>Bienvenido de Nuevo</h1>
+    <p>Inicia sesión para continuar</p>
+
+    <ion-item>
+      <ion-input #emailInput label="Correo Electrónico" labelPlacement="stacked" type="email" value="usuario@pololitos.cl"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-input #passwordInput label="Contraseña" labelPlacement="stacked" type="password" value="123456"></ion-input>
+    </ion-item>
+    
+    <ion-button (click)="login(emailInput.value, passwordInput.value)" expand="block" class="login-button">Iniciar Sesión</ion-button>
+
+    <ion-button routerLink="/forgot-password" fill="clear" expand="block">¿Olvidaste tu contraseña?</ion-button>
+    <ion-button routerLink="/register" fill="clear" expand="block">¿No tienes cuenta? Regístrate</ion-button>
+  </div>
+</ion-content>

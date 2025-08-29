@@ -20,6 +20,6 @@ export class ProfilePage implements OnInit {
 
   logout() {
     console.log('Cerrando sesión...');
-    // Aquí iría la lógica para cerrar sesión
+    
   }
 }

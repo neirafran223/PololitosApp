@@ -14,7 +14,7 @@ import { LucideAngularModule, X, Type, List, PenSquare, DollarSign, MapPin } fro
     FormsModule,
     IonicModule,
     PostJobPageRoutingModule,
-    ReactiveFormsModule, // <-- Se añade para los formularios reactivos
+    ReactiveFormsModule,
     LucideAngularModule.pick({ X, Type, List, PenSquare, DollarSign, MapPin })
   ],
   declarations: [PostJobPage]

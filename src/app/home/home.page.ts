@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { JobDetailsComponent } from '../components/job-details/job-details.component';
-import { JobService } from '../services/job.service'; // 1. Importar el servicio
+import { AuthService } from '../services/auth.service';
+import { JobService } from '../services/job.service';
 
 @Component({
   selector: 'app-home',
@@ -10,22 +11,19 @@ import { JobService } from '../services/job.service'; // 1. Importar el servicio
   standalone: false,
 })
 export class HomePage {
+  user: any = null;
+  jobs: any[] = [];
   searchQuery: string = '';
   userLocation: string = 'Viña del Mar, Chile';
-  jobs: any[] = [];
 
-  // 2. Inyectar el servicio en el constructor
   constructor(
     private modalController: ModalController,
-    private jobService: JobService 
+    private authService: AuthService,
+    private jobService: JobService
   ) {}
 
   ionViewWillEnter() {
-    this.loadData();
-  }
-
-  loadData() {
-    // 3. Obtener los datos desde el servicio
+    this.user = this.authService.getCurrentUser();
     this.jobs = this.jobService.getJobs();
   }
 

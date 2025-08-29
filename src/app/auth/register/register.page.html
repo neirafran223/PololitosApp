@@ -1,0 +1,25 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear Cuenta</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1>Únete a Pololitos</h1>
+  <p>Crea tu cuenta en segundos</p>
+
+  <ion-item>
+    <ion-input label="Nombre Completo" labelPlacement="stacked" placeholder="Juan Pérez"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Correo Electrónico" labelPlacement="stacked" type="email" placeholder="tu@correo.com"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input label="Contraseña" labelPlacement="stacked" type="password" placeholder="Mínimo 6 caracteres"></ion-input>
+  </ion-item>
+
+  <ion-button (click)="register()" expand="block" class="login-button">Registrarse</ion-button>
+</ion-content>
