@@ -1,22 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { ThemeService } from '../services/theme.service'; // 1. Importar ThemeService
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.page.html',
   styleUrls: ['./settings.page.scss'],
-  standalone: false
+  standalone: false,
 })
-export class SettingsPage implements OnInit {
-  notificationsEnabled: boolean = true;
-  darkMode: boolean = true;
+export class SettingsPage {
+  isDark = true;
 
-  constructor() { }
-
-  ngOnInit() {
+  // 2. Inyectar los servicios
+  constructor(
+    private authService: AuthService,
+    private themeService: ThemeService
+  ) {
+    // 3. Sincronizar el estado del interruptor con el servicio
+    this.isDark = this.themeService.isDarkMode();
   }
 
-  toggleDarkMode(event: any) {
-    // Aquí iría la lógica para cambiar el tema de la app
-    console.log('Modo oscuro:', event.detail.checked);
+  // 4. Método que se llama al cambiar el interruptor
+  onThemeToggle() {
+    this.themeService.toggleTheme();
+    this.isDark = this.themeService.isDarkMode();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

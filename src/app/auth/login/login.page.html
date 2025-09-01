@@ -19,16 +19,16 @@
 
       <ion-item class="auth-item">
         <lucide-icon name="mail" slot="start"></lucide-icon>
-        <ion-input #emailInput type="email" placeholder="Correo electrónico"></ion-input>
+        <ion-input #credentialInput type="text" placeholder="Correo o nombre de usuario"></ion-input>
       </ion-item>
 
       <ion-item class="auth-item">
         <lucide-icon name="lock" slot="start"></lucide-icon>
         <ion-input #passwordInput type="password" placeholder="Contraseña"></ion-input>
-        <ion-icon name="eye-outline" slot="end"></ion-icon>
+        <ion-icon #eyeIcon name="eye-outline" slot="end" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></ion-icon>
       </ion-item>
 
-      <ion-button (click)="login(emailInput.value, passwordInput.value)" expand="block" class="main-button">
+      <ion-button (click)="login(credentialInput, passwordInput)" expand="block" class="main-button">
         Iniciar Sesión
       </ion-button>
       

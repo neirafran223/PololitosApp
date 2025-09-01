@@ -1,25 +1,46 @@
-ion-toolbar {
-    --background: var(--ion-toolbar-background);
+ion-list.settings-list {
+  background: transparent;
+}
+
+ion-list-header {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(var(--ion-text-color-rgb, 255, 255, 255), 0.6);
+  margin-top: 16px;
+  padding-left: 16px;
+}
+
+ion-item {
+  --background: var(--ion-item-background);
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+
+  lucide-icon {
+    color: var(--ion-color-primary);
   }
-  
-  ion-title {
-    font-weight: 700;
-  }
-  
-  ion-item-divider {
-    --background: var(--ion-toolbar-background);
-    font-size: 0.9rem;
+
+  h3 {
     font-weight: 600;
-    padding-top: 16px;
-    padding-bottom: 8px;
+    margin-bottom: 4px;
   }
-  
-  ion-item {
-    --background: var(--ion-item-background);
-    --padding-start: 16px;
-  
-    lucide-icon {
-      margin-right: 16px;
-      color: var(--ion-color-primary);
-    }
+  p {
+    color: rgba(var(--ion-text-color-rgb, 255, 255, 255), 0.6);
+    font-size: 0.9rem;
+    margin: 0;
   }
+}
+
+.logout-button {
+  --background: var(--ion-color-danger);
+  --border-radius: 12px;
+  height: 48px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-top: 32px;
+  text-transform: none;
+  lucide-icon {
+    margin-right: 8px;
+  }
+}

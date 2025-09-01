@@ -1,0 +1,28 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Cancelar</ion-button>
+    </ion-buttons>
+    <ion-title>Editar Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" [strong]="true">Guardar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form *ngIf="userForm" [formGroup]="userForm">
+    <ion-item class="auth-item">
+      <lucide-icon name="user" slot="start"></lucide-icon>
+      <ion-input formControlName="firstName" placeholder="Nombre"></ion-input>
+    </ion-item>
+    <ion-item class="auth-item">
+      <lucide-icon name="user" slot="start"></lucide-icon>
+      <ion-input formControlName="lastName" placeholder="Apellido"></ion-input>
+    </ion-item>
+    <ion-item class="auth-item">
+      <lucide-icon name="mail" slot="start"></lucide-icon>
+      <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
+    </ion-item>
+  </form>
+</ion-content>

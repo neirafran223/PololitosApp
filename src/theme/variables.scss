@@ -1,5 +1,11 @@
 :root {
   --ion-background-color: #0B1426;
+  --ion-item-background: #1e293b;
+  --ion-toolbar-background: #0f172a;
+  --ion-text-color: #FFFFFF;
+  --ion-color-primary: #4A90E2;
+  
+  --ion-background-color: #0B1426;
   --ion-background-color-rgb: 11, 20, 38;
   
   --ion-text-color: #FFFFFF; 
@@ -24,4 +30,23 @@
   --ion-color-danger: #E74C3C;
   --ion-color-danger-rgb: 231, 76, 60;
   --ion-color-danger-contrast: #ffffff;
+}
+/* --- TEMA CLARO --- */
+/* Cuando el body tenga la clase 'light-theme', se aplicarán estos colores */
+body.light-theme {
+  --ion-background-color: #f4f5f8;
+  --ion-item-background: #ffffff;
+  --ion-toolbar-background: #ffffff;
+  --ion-text-color: #000000;
+  --ion-color-primary: #3880ff;
+
+  /* Adapta aquí otros colores si es necesario */
+  .auth-form-card, .stat-card, .menu-list ion-item {
+    --background: #ffffff;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  }
+
+  .auth-app-subtitle, .stat-card p, .menu-list ion-item p {
+    color: #666;
+  }
 }

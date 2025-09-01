@@ -4,16 +4,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RegisterPageRoutingModule } from './register-routing.module';
 import { RegisterPage } from './register.page';
-import { LucideAngularModule, User, Mail, Lock } from 'lucide-angular';
+import { LucideAngularModule, User, Mail, Lock, AtSign, Hash } from 'lucide-angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ReactiveFormsModule,
     RegisterPageRoutingModule,
-    LucideAngularModule.pick({ User, Mail, Lock })
+    ReactiveFormsModule,
+    LucideAngularModule.pick({ User, Mail, Lock, AtSign, Hash }) // <-- Añadir AtSign y Hash
   ],
   declarations: [RegisterPage]
 })

@@ -17,19 +17,23 @@
 /* --- Estilos para las páginas de Autenticación --- */
 
 ion-content.auth-background {
-  --background: var(--ion-background-color);
+  // Mantenemos el fondo pero quitamos las propiedades de flexbox
+  --background: var(--ion-background-color); 
 }
 
 .auth-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  // CAMBIO: Usamos flex-start para alinear el contenido arriba
+  justify-content: flex-start; 
   text-align: center;
   width: 100%;
   max-width: 450px;
   padding: 20px;
-  height: 100%;
+  // CAMBIO: Usamos min-height para asegurar que ocupe al menos toda la pantalla
+  // y permitimos que el contenido crezca y haga scroll si es necesario.
+  min-height: 100%; 
+  padding-top: 5vh; // Un pequeño margen superior
 }
 
 .auth-header {

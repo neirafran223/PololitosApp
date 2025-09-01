@@ -1,43 +1,60 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
-    <ion-title>Perfil</ion-title>
+    <ion-title>Mi Perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <div class="profile-header ion-padding">
-    <ion-avatar>
-      <img [src]="user.avatar" alt="Avatar de usuario" />
-    </ion-avatar>
-    <h2>{{ user.name }}</h2>
-    <p>{{ user.username }}</p>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div *ngIf="user">
+    <div class="profile-header">
+      <div class="profile-avatar">
+        {{ getInitials(user.firstName, user.lastName) }}
+      </div>
+      <div class="profile-info">
+        <h2>{{ user.firstName }} {{ user.lastName }}</h2>
+        <p>{{ user.email }}</p>
+      </div>
+      <ion-button fill="clear" class="edit-button" (click)="openEditModal()">
+        <lucide-icon name="pencil"></lucide-icon>
+      </ion-button>
+    </div>
+
+    <div class="stats-container">
+      <div class="stat-card">
+        <lucide-icon name="star"></lucide-icon>
+        <h3>4.8</h3>
+        <p>Calificación</p>
+      </div>
+      <div class="stat-card">
+        <lucide-icon name="award"></lucide-icon>
+        <h3>23</h3>
+        <p>Completados</p>
+      </div>
+      <div class="stat-card">
+        <lucide-icon name="calendar-days"></lucide-icon>
+        <h3>2</h3>
+        <p>Meses</p>
+      </div>
+    </div>
+
+    <ion-list class="menu-list" lines="none">
+      <ion-item button="true">
+        <ion-label>
+          <h3>Mis Trabajos Publicados</h3>
+          <p>Ver y gestionar tus publicaciones</p>
+        </ion-label>
+      </ion-item>
+      <ion-item button="true">
+        <ion-label>
+          <h3>Calificaciones</h3>
+          <p>Ver comentarios y puntuaciones</p>
+        </ion-label>
+      </ion-item>
+      <ion-item button="true" (click)="logout()" class="logout-item">
+        <ion-label color="danger">
+          <h3>Cerrar Sesión</h3>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
-
-  <ion-list lines="full">
-    <ion-item-divider>
-      <ion-label>Mi Actividad</ion-label>
-    </ion-item-divider>
-
-    <ion-item button="true" detail="true">
-      <lucide-icon name="edit" slot="start"></lucide-icon>
-      <ion-label>Editar Perfil</ion-label>
-    </ion-item>
-    <ion-item button="true" detail="true">
-      <lucide-icon name="layout-list" slot="start"></lucide-icon>
-      <ion-label>Mis Publicaciones</ion-label>
-    </ion-item>
-    <ion-item button="true" detail="true">
-      <lucide-icon name="heart" slot="start"></lucide-icon>
-      <ion-label>Favoritos</ion-label>
-    </ion-item>
-
-    <ion-item-divider>
-      <ion-label>Cuenta</ion-label>
-    </ion-item-divider>
-
-    <ion-item button="true" (click)="logout()">
-      <lucide-icon name="log-out" slot="start" color="var(--ion-color-danger)"></lucide-icon>
-      <ion-label color="danger">Cerrar Sesión</ion-label>
-    </ion-item>
-  </ion-list>
 </ion-content>
