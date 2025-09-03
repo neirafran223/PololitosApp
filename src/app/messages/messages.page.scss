@@ -7,7 +7,6 @@ ion-toolbar {
     font-weight: 700;
   }
   
-  // Estilo para la barra de búsqueda
   ion-searchbar {
     --background: var(--ion-item-background);
     --border-radius: 12px;
@@ -17,7 +16,6 @@ ion-toolbar {
     padding: 0;
   }
   
-  // Estilo para el título de la lista ("Recientes")
   ion-list-header h2 {
     font-size: 1.25rem;
     font-weight: 700;
@@ -25,13 +23,11 @@ ion-toolbar {
     padding-left: 0;
   }
   
-  // Contenedor de la lista
   ion-list {
     background: transparent;
     padding: 0;
   }
   
-  // Estilo para cada item de conversación
   ion-item {
     --background: var(--ion-item-background);
     --padding-start: 12px;
@@ -40,7 +36,6 @@ ion-toolbar {
     margin-bottom: 12px;
   }
   
-  // Estilos para el texto dentro de cada item
   ion-label {
     h2 {
       font-weight: 600;
@@ -61,7 +56,6 @@ ion-toolbar {
     }
   }
   
-  // Contenedor para la fecha y el contador de no leídos
   .metadata-end {
     display: flex;
     flex-direction: column;

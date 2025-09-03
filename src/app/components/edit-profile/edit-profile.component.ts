@@ -9,7 +9,7 @@ import { ModalController } from '@ionic/angular';
   standalone:false,
 })
 export class EditProfileComponent implements OnInit {
-  @Input() user: any; // Recibe los datos del usuario desde la página de perfil
+  @Input() user: any; 
   userForm!: FormGroup;
 
   constructor(
@@ -31,7 +31,6 @@ export class EditProfileComponent implements OnInit {
 
   save() {
     if (this.userForm.valid) {
-      // Devuelve los datos actualizados a la página de perfil
       this.modalCtrl.dismiss(this.userForm.value, 'save');
     }
   }

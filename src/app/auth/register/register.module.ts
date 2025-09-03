@@ -13,7 +13,7 @@ import { LucideAngularModule, User, Mail, Lock, AtSign, Hash } from 'lucide-angu
     IonicModule,
     RegisterPageRoutingModule,
     ReactiveFormsModule,
-    LucideAngularModule.pick({ User, Mail, Lock, AtSign, Hash }) // <-- Añadir AtSign y Hash
+    LucideAngularModule.pick({ User, Mail, Lock, AtSign, Hash })
   ],
   declarations: [RegisterPage]
 })

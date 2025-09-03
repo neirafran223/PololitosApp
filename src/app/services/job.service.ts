@@ -23,14 +23,14 @@ export class JobService {
 
   constructor() { }
 
-  // Método para obtener todos los trabajos
+  
   getJobs() {
-    return [...this.jobs]; // Retornamos una copia para no modificar el original accidentalmente
+    return [...this.jobs];
   }
 
-  // Método para crear un nuevo trabajo
+  
   createJob(newJob: any) {
-    this.jobs.unshift(newJob); // Añade el nuevo trabajo al inicio de la lista
+    this.jobs.unshift(newJob); 
     console.log('Trabajo añadido. Lista actual:', this.jobs);
   }
 }

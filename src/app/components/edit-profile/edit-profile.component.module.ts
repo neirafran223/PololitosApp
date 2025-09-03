@@ -9,11 +9,11 @@ import { LucideAngularModule, User, Mail } from 'lucide-angular';
   declarations: [EditProfileComponent],
   imports: [
     CommonModule,
-    IonicModule, // <-- Le da acceso a los componentes ion-*
+    IonicModule, 
     FormsModule,
-    ReactiveFormsModule, // <-- Permite usar [formGroup]
-    LucideAngularModule.pick({ User, Mail }) // <-- Le da acceso a los iconos
+    ReactiveFormsModule, 
+    LucideAngularModule.pick({ User, Mail }) 
   ],
-  exports: [EditProfileComponent] // <-- Permite que otras páginas lo usen
+  exports: [EditProfileComponent] 
 })
 export class EditProfileComponentModule {}

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { NavController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
-// --- Validador personalizado para confirmar contraseñas ---
+
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
@@ -14,7 +14,6 @@ export function passwordsMatchValidator(control: AbstractControl): ValidationErr
   return null;
 }
 
-// --- Validador personalizado para el RUT chileno (formato y dígito verificador) ---
 export function rutValidator(control: AbstractControl): ValidationErrors | null {
   const rut = control.value;
   if (!rut) {

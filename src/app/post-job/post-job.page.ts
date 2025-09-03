@@ -30,7 +30,6 @@ export class PostJobPage implements OnInit {
       location: ['', [Validators.required]]
     });
   }
-
   
   async presentToast(message: string) {
     const toast = await this.toastController.create({
@@ -45,23 +44,18 @@ export class PostJobPage implements OnInit {
   closePage() {
     this.navCtrl.navigateRoot('/tabs/tab1', { animated: true, animationDirection: 'back' });
   }
-
   
   onSubmit() {
     if (this.postJobForm.invalid) {
       this.postJobForm.markAllAsTouched();
       return;
     }
-    
-    
+        
     this.jobService.createJob(this.postJobForm.value);
 
-    
     this.presentToast('¡Trabajo publicado con éxito!');
-
-    
+ 
     this.postJobForm.reset();
-
     
     setTimeout(() => {
       this.closePage();

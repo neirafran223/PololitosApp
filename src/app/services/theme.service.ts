@@ -19,7 +19,6 @@ export class ThemeService {
   async init() {
     await this.storage.create();
     const storedTheme = await this.storage.get('theme');
-    // Si hay un tema guardado, lo usamos. Si no, el oscuro es el por defecto.
     this.currentTheme = storedTheme || 'dark';
     this.updateBodyClass();
   }
@@ -31,7 +30,6 @@ export class ThemeService {
 
   private async updateBodyClass() {
     const body = document.body;
-    // Si es tema claro, añadimos la clase 'light-theme'. Si es oscuro, la quitamos.
     if (this.currentTheme === 'light') {
       this.renderer.addClass(body, 'light-theme');
     } else {

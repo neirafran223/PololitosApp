@@ -36,9 +36,8 @@ export class LoginPage {
   }
 
   /**
-   * Cambia la visibilidad del campo de contraseña y el ícono correspondiente.
-   * @param input El elemento del campo de contraseña.
-   * @param icon El elemento del ícono del ojo.
+   * @param input 
+   * @param icon
    */
   togglePasswordVisibility(input: any, icon: any) {
     const isPassword = input.type === 'password';

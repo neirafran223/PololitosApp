@@ -5,7 +5,6 @@ import { IonicModule } from '@ionic/angular';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
 import { LucideAngularModule, Pencil, Star, Award, CalendarDays } from 'lucide-angular';
-// --- 1. Importa el módulo del nuevo componente ---
 import { EditProfileComponentModule } from '../components/edit-profile/edit-profile.component.module';
 
 @NgModule({
@@ -14,7 +13,6 @@ import { EditProfileComponentModule } from '../components/edit-profile/edit-prof
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    // --- 2. Añádelo a la lista de imports ---
     EditProfileComponentModule, 
     LucideAngularModule.pick({ Pencil, Star, Award, CalendarDays })
   ],

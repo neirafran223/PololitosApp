@@ -31,7 +31,7 @@ export class ProfilePage {
     const modal = await this.modalController.create({
       component: EditProfileComponent,
       componentProps: {
-        user: this.user // Pasamos los datos del usuario actual al modal
+        user: this.user 
       }
     });
 
@@ -40,7 +40,6 @@ export class ProfilePage {
     const { data, role } = await modal.onWillDismiss();
     
     if (role === 'save' && data) {
-      // Si el modal se cerró con 'save', actualizamos el usuario
       this.user = await this.authService.updateUser(data);
     }
   }

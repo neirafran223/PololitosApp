@@ -19,38 +19,28 @@ ion-tab-bar {
     --background: transparent;
   }
   
-  /* El espacio que ocupa el botón en la barra */
+  
   .fab-button {
-    width: 20px; // Reducimos un poco el espacio que ocupa
+    width: 20px;
   }
   
-  /* El círculo azul visible */
+  
   .fab-circle {
     position: absolute;
-    /*
-     * AJUSTE PRINCIPAL:
-     * Cambiamos 'top' de -20px a -15px para que el botón baje.
-     * Puedes experimentar con este valor (-12px, -18px, etc.) hasta que te guste.
-    */
     top: 3.5px;
     left: 50%;
     transform: translateX(-50%);
-  
-    /* AJUSTE DE TAMAÑO: Reducimos el tamaño del círculo de 60px a 56px */
     width: 42px;
     height: 42px;
     background: var(--ion-color-primary);
     border-radius: 50%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
-  
-    /* Centramos el ícono (+) perfectamente dentro del círculo */
     display: flex;
     align-items: center;
     justify-content: center;
     
     ion-icon {
       color: var(--ion-color-primary-contrast);
-      /* AJUSTE DE TAMAÑO: Reducimos el ícono para que quepa en el nuevo círculo */
       font-size: 28px;
     }
   }

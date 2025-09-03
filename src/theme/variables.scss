@@ -32,15 +32,12 @@
   --ion-color-danger-contrast: #ffffff;
 }
 /* --- TEMA CLARO --- */
-/* Cuando el body tenga la clase 'light-theme', se aplicarán estos colores */
 body.light-theme {
   --ion-background-color: #f4f5f8;
   --ion-item-background: #ffffff;
   --ion-toolbar-background: #ffffff;
   --ion-text-color: #000000;
   --ion-color-primary: #3880ff;
-
-  /* Adapta aquí otros colores si es necesario */
   .auth-form-card, .stat-card, .menu-list ion-item {
     --background: #ffffff;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
