@@ -1,0 +1,27 @@
+ion-content {
+  --background: #0B1426; // Mantenemos un color de fondo por si el video tarda en cargar
+}
+
+.splash-container {
+  position: relative; // Contenedor de referencia para el video
+  height: 100%;
+  width: 100%;
+  overflow: hidden; // Oculta las partes del video que se salgan de la pantalla
+}
+
+video {
+  // Posicionamiento para cubrir toda la pantalla
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  // Asegura que el video cubra el espacio sin importar la orientación
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  
+  // Propiedad clave para que el video cubra el espacio sin distorsionarse
+  object-fit: cover;
+}
