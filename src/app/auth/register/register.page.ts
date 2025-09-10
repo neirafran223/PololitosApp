@@ -77,7 +77,7 @@ export class RegisterPage implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
-    }, { validators: passwordsMatchValidator }); // <-- Añadimos el validador de contraseñas al grupo
+    }, { validators: passwordsMatchValidator }); 
   }
 
   async register() {
