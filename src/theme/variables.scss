@@ -31,19 +31,56 @@
   --ion-color-danger-rgb: 231, 76, 60;
   --ion-color-danger-contrast: #ffffff;
 }
-/* --- TEMA CLARO --- */
 body.light-theme {
-  --ion-background-color: #f4f5f8;
-  --ion-item-background: #ffffff;
-  --ion-toolbar-background: #ffffff;
-  --ion-text-color: #000000;
-  --ion-color-primary: #3880ff;
+  // 1. Azul Pastel (Acento)
+  --ion-color-primary: #A8D0F5;
+  --ion-color-primary-rgb: 168, 208, 245;
+  --ion-color-primary-contrast: #000000;
+  --ion-color-primary-contrast-rgb: 0, 0, 0;
+
+  // 2. Fondo Azulado Claro
+  --ion-background-color: #EAF2F8;
+  --ion-background-color-rgb: 234, 242, 248;
+
+  // 3. Fondo de Tarjetas/Items
+  --ion-item-background: #FFFFFF;
+  --ion-toolbar-background: #FFFFFF;
+
+  // 4. Texto Azul Oscuro
+  --ion-text-color: #2C3E50;
+  --ion-text-color-rgb: 44, 62, 80;
+
+  // Variables adicionales para consistencia
+  --ion-color-medium: #8a94a6; // <-- Este es nuestro gris para textos secundarios
+  --ion-border-color: #e2e8f0;
+
+  // Sombra sutil
   .auth-form-card, .stat-card, .menu-list ion-item {
-    --background: #ffffff;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.1);
   }
 
-  .auth-app-subtitle, .stat-card p, .menu-list ion-item p {
-    color: #666;
+  // Estilos para la Barra de Pestañas (Tab Bar)
+  ion-tab-bar {
+    --background: #FFFFFF;
+    --color: #8a94a6; // Íconos inactivos usan el gris secundario
+    --color-selected: #A8D0F5;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  // --- REGLAS AÑADIDAS PARA TEXTOS SECUNDARIOS ---
+
+  // Para los placeholders en los campos de texto
+  .auth-item ion-input {
+    --placeholder-color: var(--ion-color-medium);
+  }
+
+  // Para los subtítulos en las listas (ej. página de Perfil)
+  .menu-list ion-label p, .stats-container .stat-card p {
+    color: var(--ion-color-medium);
+  }
+
+  // Para el subtítulo debajo del logo (ej. página de Login)
+  .auth-app-subtitle {
+    color: var(--ion-color-medium);
   }
 }

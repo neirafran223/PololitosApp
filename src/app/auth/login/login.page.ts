@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, ToastController } from '@ionic/angular';
+import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { toastBounceInAnimation } from '../../animations/nav-animations';
 
 @Component({
   selector: 'app-login',
@@ -14,8 +15,13 @@ export class LoginPage {
   constructor(
     private authService: AuthService,
     private navCtrl: NavController,
-    private toastController: ToastController
-  ) { }
+    private toastController: ToastController,
+    private loadingCtrl: LoadingController
+  ) {}
+
+  ionViewWillEnter() {
+    this.segmentValue = 'login';
+  }
 
   async login(credentialInput: any, passwordInput: any) {
     const credential = credentialInput.value;
@@ -26,19 +32,25 @@ export class LoginPage {
       return;
     }
 
-    const success = await this.authService.login(credential, password);
+    const loading = await this.loadingCtrl.create({
+      spinner: 'crescent', // Mantenemos el tipo de spinner
+      cssClass: 'custom-loading'
+      // Se ha eliminado la línea: message: 'Iniciando sesión...'
+    });
+    await loading.present();
 
-    if (success) {
-      this.navCtrl.navigateRoot('/tabs/tab1', { animated: true, animationDirection: 'forward' });
-    } else {
-      this.presentToast('Las credenciales son incorrectas.', 'danger');
+    try {
+      const success = await this.authService.login(credential, password);
+      if (success) {
+        this.navCtrl.navigateRoot('/tabs/tab1', { animated: true });
+      } else {
+        this.presentToast('Las credenciales son incorrectas.', 'danger');
+      }
+    } finally {
+      loading.dismiss();
     }
   }
 
-  /**
-   * @param input 
-   * @param icon
-   */
   togglePasswordVisibility(input: any, icon: any) {
     const isPassword = input.type === 'password';
     input.type = isPassword ? 'text' : 'password';
@@ -47,10 +59,11 @@ export class LoginPage {
 
   async presentToast(message: string, color: string) {
     const toast = await this.toastController.create({
-      message: message,
+      message,
       duration: 3000,
       position: 'bottom',
-      color: color,
+      color,
+      enterAnimation: toastBounceInAnimation
     });
     await toast.present();
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
@@ -8,25 +8,22 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./splash.page.scss'],
   standalone: false,
 })
-export class SplashPage implements OnInit {
+export class SplashPage {
 
   constructor(
     private navCtrl: NavController,
     private authService: AuthService
   ) { }
-
-  ngOnInit() {
-  }
-
+  
   ionViewDidEnter() {
-    // Duración del video en milisegundos (ajusta según la duración real de tu video)
+    // Duración del video en milisegundos
     setTimeout(async () => {
       const isAuthenticated = await this.authService.checkAuthStatus();
       if (isAuthenticated) {
-        this.navCtrl.navigateRoot('/tabs/home', { animated: true, animationDirection: 'forward' });
+        this.navCtrl.navigateRoot('/tabs/home', { animated: true });
       } else {
-        this.navCtrl.navigateRoot('/login', { animated: true, animationDirection: 'forward' });
+        this.navCtrl.navigateRoot('/login', { animated: true });
       }
-    }, 3000); // <-- Ejemplo: 3 segundos
+    }, 3000); // Ajusta este tiempo a la duración de tu video
   }
 }

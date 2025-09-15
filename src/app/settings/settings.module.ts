@@ -5,7 +5,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { SettingsPageRoutingModule } from './settings-routing.module';
 import { SettingsPage } from './settings.page';
-import { LucideAngularModule, Bell, Moon, FileText, Shield } from 'lucide-angular';
+import { LucideAngularModule, Moon, Shield, Bell, LogOut } from 'lucide-angular';
+
 
 @NgModule({
   imports: [
@@ -13,7 +14,7 @@ import { LucideAngularModule, Bell, Moon, FileText, Shield } from 'lucide-angula
     FormsModule,
     IonicModule,
     SettingsPageRoutingModule,
-    LucideAngularModule.pick({ Bell, Moon, FileText, Shield })
+    LucideAngularModule.pick({ Moon, Shield, Bell, LogOut })
   ],
   declarations: [SettingsPage]
 })

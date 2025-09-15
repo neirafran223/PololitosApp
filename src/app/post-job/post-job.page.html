@@ -11,7 +11,7 @@
 
 <ion-content [fullscreen]="true" class="ion-padding">
   <form [formGroup]="postJobForm" (ngSubmit)="onSubmit()">
-    <ion-list lines="none">
+    <ion-list lines="none" class="ion-no-padding">
       <ion-item>
         <lucide-icon name="type" slot="start"></lucide-icon>
         <ion-input label="Título del Pololito" labelPlacement="stacked" formControlName="title"
@@ -34,8 +34,14 @@
 
       <ion-item>
         <lucide-icon name="dollar-sign" slot="start"></lucide-icon>
-        <ion-input label="Precio / Presupuesto" labelPlacement="stacked" formControlName="price"
-          placeholder="$25.000" type="text" inputmode="numeric"></ion-input>
+        <ion-input 
+          label="Precio / Presupuesto" 
+          labelPlacement="stacked" 
+          formControlName="price"
+          placeholder="$25.000" 
+          type="text" 
+          inputmode="numeric"
+          (ionBlur)="formatPrice()"> </ion-input>
       </ion-item>
 
       <ion-item>
@@ -45,7 +51,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-button class="submit-button" expand="block" (click)="onSubmit()" [disabled]="postJobForm.invalid">
+    <ion-button class="submit-button" type="submit" expand="block" [disabled]="postJobForm.invalid">
       Publicar Pololito
     </ion-button>
   </form>

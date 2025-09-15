@@ -51,6 +51,14 @@ ion-content.auth-background {
   color: white;
 }
 
+// --- Estilos para la Animación de Carga Personalizada ---
+.custom-loading {
+  --background: rgba(30, 41, 59, 0.8);
+  --spinner-color: var(--ion-color-primary);
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
 .auth-app-title {
   font-size: 2rem;
   font-weight: bold;

@@ -43,8 +43,4 @@ export class ProfilePage {
       this.user = await this.authService.updateUser(data);
     }
   }
-  
-  logout() {
-    this.authService.logout();
-  }
 }
