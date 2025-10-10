@@ -1,63 +1,71 @@
 .job-card {
-    margin: 0;
-    background: var(--ion-item-background);
-    box-shadow: none;
-    border-radius: 12px;
-  }
-  
-  ion-card-header {
-    padding-bottom: 8px;
-  }
-  
-  .header-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  
-  ion-card-title {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--ion-text-color);
-  }
-  
-  ion-chip {
-    --background: var(--ion-background-color);
-    --color: var(--ion-color-medium);
-    font-size: 0.75rem;
-    height: 24px;
-    flex-shrink: 0;
-  }
-  
-  .description {
-    font-size: 0.9rem;
-    color: var(--ion-color-medium);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    min-height: 60px;
-  }
-  
-  .metadata {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 16px;
-  }
-  
-  .price {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--ion-color-primary);
-  }
-  
-  .location {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 0.8rem;
-    color: var(--ion-color-medium);
-  }
+  margin: 0;
+  background: var(--ion-item-background);
+  box-shadow: none;
+  border-radius: 12px;
+}
+
+ion-card-header {
+  padding-bottom: 8px;
+}
+
+.header-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+ion-card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ion-text-color);
+}
+
+ion-chip {
+  --background: var(--ion-background-color);
+  --color: var(--ion-color-medium);
+  font-size: 0.75rem;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.description {
+  font-size: 0.9rem;
+  color: var(--ion-color-medium);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-height: 60px;
+}
+
+.metadata {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end; // Alineamos al final para un mejor look
+  margin-top: 16px;
+}
+
+// --- NUEVOS ESTILOS ---
+.meta-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; // Espacio entre la ubicación y la fecha
+}
+// --- FIN NUEVOS ESTILOS ---
+
+.price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.location, .date { // Se aplica el estilo a ambas clases
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--ion-color-medium);
+}

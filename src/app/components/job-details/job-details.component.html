@@ -8,7 +8,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
+<ion-content *ngIf="job" class="ion-padding">
   <div class="content-wrapper">
     <div class="job-header">
       <ion-chip color="primary">{{ job.category }}</ion-chip>
@@ -18,12 +18,26 @@
           <lucide-icon name="map-pin" size="16"></lucide-icon>
           <span>{{ job.location }}</span>
         </div>
-        <div class="price">{{ job.price }}</div>
+        <div class="price">{{ job.price | currency:'CLP':'symbol':'1.0-0' }}</div>
+      </div>
+      <div class="date-info">
+        <div class="date-item">
+          <lucide-icon name="calendar" size="16"></lucide-icon>
+          <div>
+            <span class="date-label">Inicio</span>
+            <span>{{ job.startDateTime | date:'dd MMM, yyyy, h:mm a' }}</span>
+          </div>
+        </div>
+        <div class="date-item">
+          <lucide-icon name="calendar" size="16"></lucide-icon>
+          <div>
+            <span class="date-label">Término</span>
+            <span>{{ job.endDateTime | date:'dd MMM, yyyy, h:mm a' }}</span>
+          </div>
+        </div>
       </div>
     </div>
-
     <div class="divider"></div>
-
     <div class="job-description">
       <h2>Descripción</h2>
       <p>{{ job.description }}</p>
@@ -31,7 +45,7 @@
   </div>
 </ion-content>
 
-<ion-footer class="ion-no-border ion-padding">
+<ion-footer *ngIf="job" class="ion-no-border ion-padding">
   <ion-button expand="block" (click)="contact()">
     Contactar
     <lucide-icon name="send" slot="end"></lucide-icon>

@@ -1,4 +1,4 @@
-<ion-card button="true" class="job-card">
+<ion-card *ngIf="job" button="true" class="job-card">
   <ion-card-header>
     <div class="header-wrapper">
       <ion-card-title>{{ job.title }}</ion-card-title>
@@ -10,11 +10,17 @@
     <p class="description">{{ job.description }}</p>
     
     <div class="metadata">
-      <div class="location">
-        <lucide-icon name="map-pin" size="14"></lucide-icon>
-        <span>{{ job.location }}</span>
-      </div>
-      <div class="price">{{ job.price }}</div>
+      <div class="meta-left">
+        <div class="location">
+          <lucide-icon name="map-pin" size="14"></lucide-icon>
+          <span>{{ job.location }}</span>
+        </div>
+        <div class="date">
+          <lucide-icon name="calendar" size="14"></lucide-icon>
+          <span>Inicia: {{ job.startDateTime | date:'dd MMM, yyyy' }}</span>
+        </div>
+        </div>
+      <div class="price">{{ job.price | currency:'CLP':'symbol':'1.0-0' }}</div>
     </div>
   </ion-card-content>
 </ion-card>
