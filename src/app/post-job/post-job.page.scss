@@ -1,28 +1,34 @@
-ion-toolbar {
-    --background: var(--ion-toolbar-background);
+.form-item {
+  --background: var(--ion-item-background);
+  --border-radius: 12px;
+  --padding-start: 15px;
+  --highlight-color-focused: var(--ion-color-primary);
+  margin-bottom: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+
+  lucide-icon {
+    margin-right: 10px;
+    color: rgba(var(--ion-text-color-rgb), 0.6);
   }
-  
-  ion-title {
-    font-weight: 700;
+}
+
+.date-time-item {
+  cursor: pointer;
+  .date-display {
+    width: 100%;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 1rem;
+    color: var(--ion-text-color);
   }
-  
-  ion-item {
-    --background: var(--ion-item-background);
-    --border-radius: 12px;
-    --padding-start: 12px;
-    margin-bottom: 16px;
-  
-    lucide-icon {
-      margin-right: 12px;
-      color: var(--ion-color-primary);
-    }
-  }
-  
-  ion-list {
-    background: transparent;
-  }
-  
-  .submit-button {
-    --box-shadow: none;
-    margin-top: 30px;
-  }
+}
+
+.submit-button {
+  --background: var(--ion-color-primary);
+  --border-radius: 12px;
+  height: 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: none;
+  margin-top: 24px;
+}

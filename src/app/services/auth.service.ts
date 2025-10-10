@@ -1,44 +1,60 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private currentUser: any = null;
-  private storageInitialized = false;
+  private _storage: Storage | null = null;
+  private readonly USERS_KEY = 'users';
+  private readonly CURRENT_USER_KEY = 'currentUser';
 
-  constructor(private router: Router, private storage: Storage) {
+  constructor(
+    private storage: Storage,
+    private navCtrl: NavController
+    ) {
     this.init();
   }
 
-  
   async init() {
-    await this.storage.create();
-    this.currentUser = await this.storage.get('currentUser');
-    this.storageInitialized = true;
+    this._storage = await this.storage.create();
+  }
+  
+  private async ensureStorageReady() {
+    if (!this._storage) {
+      await this.init();
+    }
+  }
+  
+  /**
+   * Revisa directamente la memoria persistente para ver si hay un usuario logueado.
+   * Este es el método que usará nuestro AuthGuard.
+   */
+  async checkAuthStatus(): Promise<boolean> {
+    await this.ensureStorageReady();
+    const user = await this._storage!.get(this.CURRENT_USER_KEY);
+    return !!user;
   }
 
-  
   async login(credential: string, password: string): Promise<boolean> {
-    const users = await this.storage.get('users') || [];
+    await this.ensureStorageReady();
+    const users = await this._storage!.get(this.USERS_KEY) || [];
     const user = users.find((u: any) =>
       (u.email.toLowerCase() === credential.toLowerCase() || u.username.toLowerCase() === credential.toLowerCase())
       && u.password === password
     );
 
     if (user) {
-      this.currentUser = user;
-      await this.storage.set('currentUser', this.currentUser);
+      await this._storage!.set(this.CURRENT_USER_KEY, user);
       return true;
     }
     return false;
   }
 
-  
   async register(userData: any): Promise<boolean> {
-    const users = await this.storage.get('users') || [];
+    await this.ensureStorageReady();
+    const users = await this._storage!.get(this.USERS_KEY) || [];
     const userExists = users.find((u: any) => u.email === userData.email || u.username === userData.username);
 
     if (userExists) {
@@ -46,67 +62,56 @@ export class AuthService {
     }
 
     users.push(userData);
-    await this.storage.set('users', users);
-
-    this.currentUser = userData;
-    await this.storage.set('currentUser', this.currentUser);
+    await this._storage!.set(this.USERS_KEY, users);
+    await this._storage!.set(this.CURRENT_USER_KEY, userData);
     return true;
   }
 
-  
   async logout() {
-    this.currentUser = null;
-    await this.storage.remove('currentUser');
-    this.router.navigate(['/login']);
+    await this.ensureStorageReady();
+    await this._storage!.remove(this.CURRENT_USER_KEY);
+    this.navCtrl.navigateRoot('/login');
   }
 
-  
   async updateUser(updatedData: any): Promise<any> {
-    if (!this.currentUser) return null;
+    await this.ensureStorageReady();
+    let currentUser = await this._storage!.get(this.CURRENT_USER_KEY);
+    if (!currentUser) return null;
 
-    this.currentUser = { ...this.currentUser, ...updatedData };
-    await this.storage.set('currentUser', this.currentUser);
+    currentUser = { ...currentUser, ...updatedData };
+    await this._storage!.set(this.CURRENT_USER_KEY, currentUser);
 
-    const users = await this.storage.get('users') || [];
-    const userIndex = users.findIndex((u: any) => u.email === this.currentUser.email);
+    const users = await this._storage!.get(this.USERS_KEY) || [];
+    const userIndex = users.findIndex((u: any) => u.email === currentUser.email);
 
     if (userIndex > -1) {
-      users[userIndex] = this.currentUser;
-      await this.storage.set('users', users);
+      users[userIndex] = currentUser;
+      await this._storage!.set(this.USERS_KEY, users);
     }
-
-    return this.currentUser;
+    return currentUser;
   }
-  
-  
+
   async findUserByEmail(email: string): Promise<boolean> {
-    const users = await this.storage.get('users') || [];
+    await this.ensureStorageReady();
+    const users = await this._storage!.get(this.USERS_KEY) || [];
     return users.some((u: any) => u.email === email);
   }
 
-  
   async updatePassword(email: string, newPassword: string): Promise<boolean> {
-    const users = await this.storage.get('users') || [];
+    await this.ensureStorageReady();
+    const users = await this._storage!.get(this.USERS_KEY) || [];
     const userIndex = users.findIndex((u: any) => u.email === email);
 
     if (userIndex > -1) {
       users[userIndex].password = newPassword;
-      await this.storage.set('users', users);
+      await this._storage!.set(this.USERS_KEY, users);
       return true;
     }
     return false;
   }
 
-  
-  getCurrentUser() {
-    return this.currentUser;
-  }
-
-  
-  async checkAuthStatus(): Promise<boolean> {
-    if (!this.storageInitialized) {
-      await this.init();
-    }
-    return this.currentUser !== null;
+  async getCurrentUser() {
+    await this.ensureStorageReady();
+    return this._storage!.get(this.CURRENT_USER_KEY);
   }
 }

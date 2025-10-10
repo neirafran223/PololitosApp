@@ -1,39 +1,33 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard'; // Asegúrate de tener tu AuthGuard
+import { AuthGuard } from './guards/auth.guard'; // 1. Se importa el guardián
 
 const routes: Routes = [
+  // --- Rutas Públicas (Cualquiera puede acceder) ---
+  {
+    path: '',
+    redirectTo: 'login', 
+    pathMatch: 'full'
+  },
   {
     path: 'login',
     loadChildren: () => import('./auth/login/login.module').then( m => m.LoginPageModule)
-  },
-  {
-    path: 'splash', // <-- Asegúrate de que la ruta a la página splash exista
-    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  },
-  {
-    path: 'forgot-password',
-    loadChildren: () => import('./auth/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
   },
   {
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then( m => m.RegisterPageModule)
   },
   {
+    path: 'forgot-password',
+    loadChildren: () => import('./auth/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
+  },
+
+  // --- Rutas Protegidas (Requieren inicio de sesión) ---
+  {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuard] // Protegemos las pestañas
+    canActivate: [AuthGuard] // 2. Se aplica el guardián aquí
   },
-  {
-    path: '',
-    redirectTo: 'splash',
-    pathMatch: 'full'
-  },
-  {
-    path: 'splash',
-    loadChildren: () => import('./splash/splash.module').then( m => m.SplashPageModule)
-  }
-
 ];
 
 @NgModule({

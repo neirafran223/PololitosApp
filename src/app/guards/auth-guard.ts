@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
 @Injectable({
@@ -7,13 +8,21 @@ import { AuthService } from '../services/auth.service';
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private navCtrl: NavController
+  ) {}
 
-  canActivate(): boolean {
-    if (this.authService.isAuthenticated()) {
+  async canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Promise<boolean | UrlTree> {
+    
+    const isAuthenticated = await this.authService.checkAuthStatus();
+
+    if (isAuthenticated) {
       return true;
     } else {
-      this.router.navigate(['/login']);
+      this.navCtrl.navigateRoot('/login');
       return false;
     }
   }

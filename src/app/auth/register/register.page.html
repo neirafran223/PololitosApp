@@ -1,12 +1,10 @@
 <ion-content [fullscreen]="true" class="auth-background">
   <div class="auth-container">
-
     <div class="auth-header">
       <div class="auth-logo">P</div>
       <h1 class="auth-app-title">Pololitos</h1>
       <p class="auth-app-subtitle">Crea tu cuenta en segundos</p>
     </div>
-
     <div class="auth-form-card">
       <ion-segment [value]="segmentValue" class="segment-tabs">
         <ion-segment-button value="login" routerLink="/login">
@@ -16,9 +14,7 @@
           <ion-label>Registrarse</ion-label>
         </ion-segment-button>
       </ion-segment>
-
       <form [formGroup]="registerForm" (ngSubmit)="register()">
-
         <ion-item class="auth-item">
           <lucide-icon name="user" slot="start"></lucide-icon>
           <ion-input formControlName="firstName" placeholder="Nombre"></ion-input>
@@ -26,7 +22,6 @@
         <div *ngIf="shouldShowError(registerForm.get('firstName'))" class="error-message">
           <ion-text color="danger">El nombre es requerido.</ion-text>
         </div>
-
         <ion-item class="auth-item">
           <lucide-icon name="user" slot="start"></lucide-icon>
           <ion-input formControlName="lastName" placeholder="Apellido"></ion-input>
@@ -34,7 +29,6 @@
         <div *ngIf="shouldShowError(registerForm.get('lastName'))" class="error-message">
           <ion-text color="danger">El apellido es requerido.</ion-text>
         </div>
-
         <ion-item class="auth-item">
           <lucide-icon name="at-sign" slot="start"></lucide-icon>
           <ion-input formControlName="username" placeholder="Nombre de usuario"></ion-input>
@@ -43,16 +37,15 @@
           <ion-text color="danger" *ngIf="registerForm.get('username')?.hasError('required')">El nombre de usuario es requerido.</ion-text>
           <ion-text color="danger" *ngIf="registerForm.get('username')?.hasError('pattern')">Solo letras, números y guion bajo.</ion-text>
         </div>
-
         <ion-item class="auth-item">
           <lucide-icon name="hash" slot="start"></lucide-icon>
-          <ion-input formControlName="rut" placeholder="RUT (ej: 12345678-9)"></ion-input>
+          <!-- Se añade el evento (ionInput) aquí -->
+          <ion-input formControlName="rut" placeholder="RUT (ej: 12.345.678-9)" (ionInput)="onRutInput($event)"></ion-input>
         </ion-item>
         <div *ngIf="shouldShowError(registerForm.get('rut'))" class="error-message">
           <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('required')">El RUT es requerido.</ion-text>
           <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('invalidRut')">El RUT no es válido.</ion-text>
         </div>
-
         <ion-item class="auth-item">
           <lucide-icon name="mail" slot="start"></lucide-icon>
           <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
@@ -60,7 +53,6 @@
         <div *ngIf="shouldShowError(registerForm.get('email'))" class="error-message">
           <ion-text color="danger">El correo no es válido.</ion-text>
         </div>
-
         <ion-item class="auth-item">
           <lucide-icon name="lock" slot="start"></lucide-icon>
           <ion-input #passwordInput formControlName="password" type="password" placeholder="Contraseña"></ion-input>
@@ -69,7 +61,6 @@
         <div *ngIf="shouldShowError(registerForm.get('password'))" class="error-message">
           <ion-text color="danger">La contraseña debe tener al menos 6 caracteres.</ion-text>
         </div>
-
         <ion-item class="auth-item">
           <lucide-icon name="lock" slot="start"></lucide-icon>
           <ion-input #confirmPasswordInput formControlName="confirmPassword" type="password" placeholder="Confirmar contraseña"></ion-input>
@@ -78,7 +69,6 @@
         <div *ngIf="shouldShowError(registerForm.get('confirmPassword')) || (registerForm.hasError('passwordsMismatch') && registerForm.get('confirmPassword')?.touched)" class="error-message">
           <ion-text color="danger">Las contraseñas no coinciden.</ion-text>
         </div>
-        
         <ion-button type="submit" expand="block" class="main-button" [disabled]="registerForm.invalid">
           Crear Cuenta
         </ion-button>

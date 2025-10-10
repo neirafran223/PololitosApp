@@ -1,5 +1,5 @@
 <ion-header class="ion-no-border">
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>Publicar un Pololito</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="closePage()">
@@ -12,13 +12,14 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <form [formGroup]="postJobForm" (ngSubmit)="onSubmit()">
     <ion-list lines="none" class="ion-no-padding">
-      <ion-item>
+      
+      <ion-item class="form-item">
         <lucide-icon name="type" slot="start"></lucide-icon>
         <ion-input label="Título del Pololito" labelPlacement="stacked" formControlName="title"
           placeholder="Ej: Necesito jardinero para mi casa"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="form-item">
         <lucide-icon name="list" slot="start"></lucide-icon>
         <ion-select label="Categoría" labelPlacement="stacked" formControlName="category"
           placeholder="Selecciona una categoría">
@@ -26,29 +27,47 @@
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="form-item">
         <lucide-icon name="pen-square" slot="start"></lucide-icon>
         <ion-textarea label="Descripción" labelPlacement="stacked" formControlName="description"
           placeholder="Describe en qué consiste el trabajo..." [autoGrow]="true"></ion-textarea>
       </ion-item>
+      
+      <ion-item class="form-item date-time-item" button="true" (click)="openDatePicker('start')">
+        <lucide-icon name="calendar" slot="start"></lucide-icon>
+        <ion-label position="stacked">Fecha de Inicio</ion-label>
+        <div class="date-display">
+          {{ postJobForm.get('startDateTime')?.value ? (postJobForm.get('startDateTime')?.value | date:'full') : 'Selecciona una fecha y hora' }}
+        </div>
+      </ion-item>
 
-      <ion-item>
+      <ion-item class="form-item date-time-item" button="true" (click)="openDatePicker('end')" [disabled]="!postJobForm.get('startDateTime')?.value">
+        <lucide-icon name="calendar" slot="start"></lucide-icon>
+        <ion-label position="stacked">Fecha de Término</ion-label>
+        <div class="date-display">
+          {{ postJobForm.get('endDateTime')?.value ? (postJobForm.get('endDateTime')?.value | date:'full') : 'Selecciona una fecha y hora' }}
+        </div>
+      </ion-item>
+
+      <ion-item class="form-item">
         <lucide-icon name="dollar-sign" slot="start"></lucide-icon>
         <ion-input 
           label="Precio / Presupuesto" 
           labelPlacement="stacked" 
           formControlName="price"
-          placeholder="$25.000" 
+          placeholder="$ 0" 
           type="text" 
           inputmode="numeric"
-          (ionBlur)="formatPrice()"> </ion-input>
+          (ionInput)="onPriceInput($event)">
+        </ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="form-item">
         <lucide-icon name="map-pin" slot="start"></lucide-icon>
         <ion-input label="Ubicación" labelPlacement="stacked" formControlName="location"
           placeholder="Ej: Viña del Mar"></ion-input>
       </ion-item>
+      
     </ion-list>
 
     <ion-button class="submit-button" type="submit" expand="block" [disabled]="postJobForm.invalid">
