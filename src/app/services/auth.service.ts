@@ -1,117 +1,91 @@
 import { Injectable } from '@angular/core';
 import { NavController } from '@ionic/angular';
-import { Storage } from '@ionic/storage-angular';
+import { DatabaseService, UserRecord } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private _storage: Storage | null = null;
-  private readonly USERS_KEY = 'users';
-  private readonly CURRENT_USER_KEY = 'currentUser';
-
   constructor(
-    private storage: Storage,
-    private navCtrl: NavController
-    ) {
-    this.init();
-  }
-
-  async init() {
-    this._storage = await this.storage.create();
-  }
-  
-  private async ensureStorageReady() {
-    if (!this._storage) {
-      await this.init();
-    }
-  }
+    private navCtrl: NavController,
+    private database: DatabaseService
+    ) { }
   
   /**
    * Revisa directamente la memoria persistente para ver si hay un usuario logueado.
    * Este es el método que usará nuestro AuthGuard.
    */
   async checkAuthStatus(): Promise<boolean> {
-    await this.ensureStorageReady();
-    const user = await this._storage!.get(this.CURRENT_USER_KEY);
+    const user = await this.database.getCurrentUser();
     return !!user;
   }
 
   async login(credential: string, password: string): Promise<boolean> {
-    await this.ensureStorageReady();
-    const users = await this._storage!.get(this.USERS_KEY) || [];
-    const user = users.find((u: any) =>
-      (u.email.toLowerCase() === credential.toLowerCase() || u.username.toLowerCase() === credential.toLowerCase())
-      && u.password === password
-    );
-
+    const user = await this.database.findUserForLogin(credential, password);
     if (user) {
-      await this._storage!.set(this.CURRENT_USER_KEY, user);
+      await this.database.setCurrentUser(user);
       return true;
     }
     return false;
   }
 
   async register(userData: any): Promise<boolean> {
-    await this.ensureStorageReady();
-    const users = await this._storage!.get(this.USERS_KEY) || [];
-    const userExists = users.find((u: any) => u.email === userData.email || u.username === userData.username);
+    const { confirmPassword, ...payload } = userData;
+    const exists = await this.database.userExists(payload.email, payload.username);
 
-    if (userExists) {
-      return false; 
+    if (exists) {
+      return false;
     }
 
-    users.push(userData);
-    await this._storage!.set(this.USERS_KEY, users);
-    await this._storage!.set(this.CURRENT_USER_KEY, userData);
+    const record = await this.database.createUser(payload);
+    if (!record) {
+      return false;
+    }
+
+    await this.database.setCurrentUser(record);
     return true;
   }
 
   async logout() {
-    await this.ensureStorageReady();
-    await this._storage!.remove(this.CURRENT_USER_KEY);
+    await this.database.clearCurrentUser();
     this.navCtrl.navigateRoot('/login');
   }
 
   async updateUser(updatedData: any): Promise<any> {
-    await this.ensureStorageReady();
-    let currentUser = await this._storage!.get(this.CURRENT_USER_KEY);
-    if (!currentUser) return null;
-
-    currentUser = { ...currentUser, ...updatedData };
-    await this._storage!.set(this.CURRENT_USER_KEY, currentUser);
-
-    const users = await this._storage!.get(this.USERS_KEY) || [];
-    const userIndex = users.findIndex((u: any) => u.email === currentUser.email);
-
-    if (userIndex > -1) {
-      users[userIndex] = currentUser;
-      await this._storage!.set(this.USERS_KEY, users);
+    const currentUser = await this.database.getCurrentUser();
+    if (!currentUser?.id) {
+      return null;
     }
-    return currentUser;
+
+    const updated: UserRecord | null = await this.database.updateUser({ ...updatedData, id: currentUser.id });
+    if (updated) {
+      await this.database.setCurrentUser(updated);
+    }
+
+    return updated;
   }
 
   async findUserByEmail(email: string): Promise<boolean> {
-    await this.ensureStorageReady();
-    const users = await this._storage!.get(this.USERS_KEY) || [];
-    return users.some((u: any) => u.email === email);
+    return this.database.findUserByEmail(email);
   }
 
   async updatePassword(email: string, newPassword: string): Promise<boolean> {
-    await this.ensureStorageReady();
-    const users = await this._storage!.get(this.USERS_KEY) || [];
-    const userIndex = users.findIndex((u: any) => u.email === email);
+    const success = await this.database.updatePassword(email, newPassword);
 
-    if (userIndex > -1) {
-      users[userIndex].password = newPassword;
-      await this._storage!.set(this.USERS_KEY, users);
-      return true;
+    if (success) {
+      const current = await this.database.getCurrentUser();
+      if (current && current.email.toLowerCase() === email.toLowerCase()) {
+        const refreshed = await this.database.getUserByEmail(email);
+        if (refreshed) {
+          await this.database.setCurrentUser(refreshed);
+        }
+      }
     }
-    return false;
+
+    return success;
   }
 
   async getCurrentUser() {
-    await this.ensureStorageReady();
-    return this._storage!.get(this.CURRENT_USER_KEY);
+    return this.database.getCurrentUser();
   }
 }
