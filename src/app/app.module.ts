@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from '@ionic/storage-angular'; // <-- Importar
@@ -15,6 +16,7 @@ import { LucideAngularModule, icons } from 'lucide-angular';
       navAnimation: fadeAnimation // <-- Aplica la animación globalmente
     }),
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(),
     AppRoutingModule,
     IonicStorageModule.forRoot(), // <-- Configurar

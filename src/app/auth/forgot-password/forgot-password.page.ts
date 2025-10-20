@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { PasswordResetService } from '../../services/password-reset.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -21,26 +22,46 @@ export class ForgotPasswordPage {
     private router: Router,
     private toastController: ToastController,
     private alertController: AlertController,
-    private authService: AuthService 
+    private authService: AuthService,
+    private passwordResetService: PasswordResetService
   ) { }
 
   async sendCode() {
+    if (!this.email) {
+      this.presentToast('Debes ingresar un correo electrónico.', 'danger');
+      return;
+    }
+
     const userExists = await this.authService.findUserByEmail(this.email);
-    if (userExists) {
-      this.generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-      this.presentAlert('Código Enviado', `Para esta simulación, tu código es: ${this.generatedCode}`);
-      this.currentStep = 'enterCode';
-    } else {
+    if (!userExists) {
       this.presentToast('El correo ingresado no fue encontrado.', 'danger');
+      return;
+    }
+
+    try {
+      const response = await this.passwordResetService.requestReset(this.email);
+      this.generatedCode = response.code ?? '';
+      await this.presentAlert('Código Enviado', `Para esta simulación, tu código es: ${this.generatedCode}`);
+      this.currentStep = 'enterCode';
+    } catch (error) {
+      console.error('Error requesting password reset code', error);
+      this.presentToast('No pudimos enviar el código. Intenta nuevamente más tarde.', 'danger');
     }
   }
 
-  verifyCode() {
-    if (this.verificationCode === this.generatedCode) {
+  async verifyCode() {
+    if (!this.verificationCode) {
+      this.presentToast('Debes ingresar el código recibido.', 'danger');
+      return;
+    }
+
+    try {
+      await this.passwordResetService.verifyCode(this.email, this.verificationCode);
       this.presentToast('Código verificado correctamente.', 'success');
       this.currentStep = 'enterPassword';
-    } else {
-      this.presentToast('El código ingresado es incorrecto.', 'danger');
+    } catch (error: any) {
+      const message = error?.error?.message ?? 'El código ingresado es incorrecto o ha expirado.';
+      this.presentToast(message, 'danger');
     }
   }
 
@@ -53,12 +74,18 @@ export class ForgotPasswordPage {
       this.presentToast('Las contraseñas no coinciden.', 'danger');
       return;
     }
-    const success = await this.authService.updatePassword(this.email, this.newPassword);
-    if (success) {
-      this.presentToast('Contraseña actualizada con éxito.', 'success');
-      this.router.navigate(['/login']);
-    } else {
-      this.presentToast('Ocurrió un error al actualizar la contraseña.', 'danger');
+    try {
+      await this.passwordResetService.confirmReset(this.email, this.verificationCode);
+      const success = await this.authService.updatePassword(this.email, this.newPassword);
+      if (success) {
+        this.presentToast('Contraseña actualizada con éxito.', 'success');
+        this.router.navigate(['/login']);
+      } else {
+        this.presentToast('Ocurrió un error al actualizar la contraseña.', 'danger');
+      }
+    } catch (error: any) {
+      const message = error?.error?.message ?? 'No pudimos confirmar el restablecimiento de la contraseña.';
+      this.presentToast(message, 'danger');
     }
   }
 
