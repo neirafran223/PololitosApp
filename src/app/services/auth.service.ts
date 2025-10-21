@@ -1,20 +1,41 @@
 import { Injectable } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { DatabaseService, UserRecord } from './database.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  private apiUrl = 'http://127.0.0.1:8000/api'; // ajusta si corresponde
+
   constructor(
     private navCtrl: NavController,
-    private database: DatabaseService
-    ) { }
-  
-  /**
-   * Revisa directamente la memoria persistente para ver si hay un usuario logueado.
-   * Este es el método que usará nuestro AuthGuard.
-   */
+    private database: DatabaseService,
+    private http: HttpClient
+  ) { }
+
+  // API DRF
+  forgotPassword(email: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/forgot-password`, { email });
+  }
+
+  verifyResetToken(email: string, token: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/verify-reset-token`, { email, token });
+  }
+
+  resetPassword(email: string, token: string, password: string, password_confirmation: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, {
+      email,
+      token,
+      password,
+      password_confirmation
+    });
+  }
+
+  // AUTH LOCAL (SQLite)
   async checkAuthStatus(): Promise<boolean> {
     const user = await this.database.getCurrentUser();
     return !!user;

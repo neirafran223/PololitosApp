@@ -13,7 +13,6 @@ export class ForgotPasswordPage {
   currentStep: 'enterEmail' | 'enterCode' | 'enterPassword' = 'enterEmail';
   email = '';
   verificationCode = '';
-  generatedCode = '';
   newPassword = '';
   confirmPassword = '';
 
@@ -24,42 +23,73 @@ export class ForgotPasswordPage {
     private authService: AuthService 
   ) { }
 
+  // PASO 1: Enviar código por correo (backend)
   async sendCode() {
-    const userExists = await this.authService.findUserByEmail(this.email);
-    if (userExists) {
-      this.generatedCode = Math.floor(1000 + Math.random() * 9000).toString();
-      this.presentAlert('Código Enviado', `Para esta simulación, tu código es: ${this.generatedCode}`);
-      this.currentStep = 'enterCode';
-    } else {
-      this.presentToast('El correo ingresado no fue encontrado.', 'danger');
+    if (!this.email || !/^\S+@\S+\.\S+$/.test(this.email)) {
+      this.presentToast('Ingresa un correo válido.', 'danger');
+      return;
     }
+    this.authService.forgotPassword(this.email).subscribe({
+      next: async () => {
+        await this.presentAlert('Código Enviado', 'Te enviamos un código de verificación a tu correo.');
+        this.currentStep = 'enterCode';
+      },
+      error: async (err) => {
+        const msg = err?.error?.detail || 'No fue posible enviar el código.';
+        this.presentToast(msg, 'danger');
+      }
+    });
   }
 
+  // PASO 2: Verificar código con backend
   verifyCode() {
-    if (this.verificationCode === this.generatedCode) {
-      this.presentToast('Código verificado correctamente.', 'success');
-      this.currentStep = 'enterPassword';
-    } else {
-      this.presentToast('El código ingresado es incorrecto.', 'danger');
+    if (!this.verificationCode || this.verificationCode.length !== 4) {
+      this.presentToast('Ingresa el código de 4 dígitos.', 'danger');
+      return;
     }
+    this.authService.verifyResetToken(this.email, this.verificationCode).subscribe({
+      next: async () => {
+        await this.presentToast('Código verificado correctamente.', 'success');
+        this.currentStep = 'enterPassword';
+      },
+      error: async (err) => {
+        const msg = err?.error?.detail || 'El código ingresado es incorrecto o expiró.';
+        this.presentToast(msg, 'danger');
+      }
+    });
   }
 
+  // PASO 3: Resetear en backend y sincronizar SQLite
   async updatePassword() {
-    if (this.newPassword.length < 6) {
-      this.presentToast('La contraseña debe tener al menos 6 caracteres.', 'danger');
+    if (this.newPassword.length < 8) {
+      this.presentToast('La contraseña debe tener al menos 8 caracteres.', 'danger');
       return;
     }
     if (this.newPassword !== this.confirmPassword) {
       this.presentToast('Las contraseñas no coinciden.', 'danger');
       return;
     }
-    const success = await this.authService.updatePassword(this.email, this.newPassword);
-    if (success) {
-      this.presentToast('Contraseña actualizada con éxito.', 'success');
-      this.router.navigate(['/login']);
-    } else {
-      this.presentToast('Ocurrió un error al actualizar la contraseña.', 'danger');
-    }
+
+    this.authService.resetPassword(
+      this.email,
+      this.verificationCode,
+      this.newPassword,
+      this.confirmPassword
+    ).subscribe({
+      next: async () => {
+        const okLocal = await this.authService.updatePassword(this.email, this.newPassword);
+        if (okLocal) {
+          this.presentToast('Contraseña actualizada con éxito.', 'success');
+        } else {
+          this.presentToast('Se actualizó en el servidor, pero falló la actualización local.', 'warning');
+        }
+        this.router.navigate(['/login']);
+      },
+      error: async (err) => {
+        const msg = err?.error?.detail || 'No se pudo actualizar la contraseña.';
+        this.presentToast(msg, 'danger');
+      }
+    });
   }
 
   async presentToast(message: string, color: string) {
