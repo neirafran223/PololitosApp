@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
-// --- Validadores personalizados ---
+// --- Validadores personalizados (no cambian) ---
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
@@ -20,6 +20,13 @@ export function rutValidator(control: AbstractControl): ValidationErrors | null 
   if (rutLimpio.length < 2) return { invalidRut: true };
   const cuerpo = rutLimpio.slice(0, -1);
   const dv = rutLimpio.slice(-1);
+  const rutNumero = parseInt(cuerpo, 10); // Validación de rango
+  if (isNaN(rutNumero)) {
+    return { invalidRut: true };
+  }
+  if (rutNumero < 1000000 || rutNumero > 25000000) {
+    return { invalidRange: true };
+  } // Fin validación rango
   let suma = 0;
   let multiplo = 2;
   for (let i = cuerpo.length - 1; i >= 0; i--) {
@@ -35,11 +42,12 @@ export function rutValidator(control: AbstractControl): ValidationErrors | null 
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
-  standalone: false,
+  standalone: false, // Se mantiene tu configuración
 })
 export class RegisterPage implements OnInit {
   registerForm!: FormGroup;
-  segmentValue = 'register';
+  
+  // Se eliminan 'segmentValue' y 'ionViewWillEnter'
 
   constructor(
     private fb: FormBuilder,
@@ -59,10 +67,6 @@ export class RegisterPage implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
     }, { validators: passwordsMatchValidator }); 
-  }
-
-  ionViewWillEnter() {
-    this.segmentValue = 'register';
   }
 
   // --- FUNCIÓN AÑADIDA PARA FORMATEAR EL RUT EN TIEMPO REAL ---
@@ -100,10 +104,13 @@ export class RegisterPage implements OnInit {
       if (success) {
         this.navCtrl.navigateRoot('/tabs/tab1', { animated: true, animationDirection: 'forward' });
         this.presentToast('¡Registro exitoso!', 'success');
-      } else {
-        this.presentToast('Este correo o nombre de usuario ya está en uso.', 'danger');
       }
-    } finally {
+      // Se elimina el 'else' y se confía en el 'catch'
+    } catch (error: any) {
+      // Manejo de errores mejorado
+      this.presentToast(error.message, 'danger');
+    }
+    finally {
       loading.dismiss();
     }
   }

@@ -7,10 +7,11 @@ import { toastBounceInAnimation } from '../../animations/nav-animations';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: false,
+  standalone: false, // Se mantiene tu configuración
 })
 export class LoginPage {
-  segmentValue = 'login';
+  
+  // Se eliminan 'segmentValue' y 'ionViewWillEnter'
 
   constructor(
     private authService: AuthService,
@@ -18,10 +19,6 @@ export class LoginPage {
     private toastController: ToastController,
     private loadingCtrl: LoadingController
   ) {}
-
-  ionViewWillEnter() {
-    this.segmentValue = 'login';
-  }
 
   async login(credentialInput: any, passwordInput: any) {
     const credential = credentialInput.value;
@@ -33,9 +30,8 @@ export class LoginPage {
     }
 
     const loading = await this.loadingCtrl.create({
-      spinner: 'crescent', // Mantenemos el tipo de spinner
+      spinner: 'crescent',
       cssClass: 'custom-loading'
-      // Se ha eliminado la línea: message: 'Iniciando sesión...'
     });
     await loading.present();
 

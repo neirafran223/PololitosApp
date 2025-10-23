@@ -6,14 +6,9 @@
       <p class="auth-app-subtitle">Crea tu cuenta en segundos</p>
     </div>
     <div class="auth-form-card">
-      <ion-segment [value]="segmentValue" class="segment-tabs">
-        <ion-segment-button value="login" routerLink="/login">
-          <ion-label>Iniciar Sesión</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="register">
-          <ion-label>Registrarse</ion-label>
-        </ion-segment-button>
-      </ion-segment>
+      
+      <h2 class="auth-form-title">Crear Cuenta</h2>
+
       <form [formGroup]="registerForm" (ngSubmit)="register()">
         <ion-item class="auth-item">
           <lucide-icon name="user" slot="start"></lucide-icon>
@@ -39,12 +34,12 @@
         </div>
         <ion-item class="auth-item">
           <lucide-icon name="hash" slot="start"></lucide-icon>
-          <!-- Se añade el evento (ionInput) aquí -->
           <ion-input formControlName="rut" placeholder="RUT (ej: 12.345.678-9)" (ionInput)="onRutInput($event)"></ion-input>
         </ion-item>
         <div *ngIf="shouldShowError(registerForm.get('rut'))" class="error-message">
           <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('required')">El RUT es requerido.</ion-text>
           <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('invalidRut')">El RUT no es válido.</ion-text>
+          <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('invalidRange')">RUT fuera de rango (1.0M-25.0M).</ion-text>
         </div>
         <ion-item class="auth-item">
           <lucide-icon name="mail" slot="start"></lucide-icon>
@@ -74,5 +69,13 @@
         </ion-button>
       </form>
     </div>
+
+    <div class="auth-switch-footer">
+      <span>¿Ya tienes una cuenta?</span>
+      <ion-button fill="clear" routerLink="/login" class="link-button-bold">
+        Inicia sesión
+      </ion-button>
+    </div>
+
   </div>
 </ion-content>

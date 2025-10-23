@@ -14,23 +14,29 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-/* --- Estilos para las páginas de Autenticación --- */
-
-ion-content.auth-background {
-  // Mantenemos el fondo pero quitamos las propiedades de flexbox
-  --background: var(--ion-background-color); 
+/* --- Estilos Globales --- */
+lucide-icon {
+  width: 18px;
+  height: 18px;
 }
 
+/* --- Estilos para las páginas de Autenticación (NUEVO DISEÑO) --- */
+
+ion-content.auth-background {
+  --background: var(--ion-background-color);
+}
+
+/* Grid de centrado (para el HTML de login/register) */
+.auth-background ion-grid,
+.auth-background ion-row {
+  height: 100%;
+}
+
+/* Contenedor que agrupa header, card y footer */
 .auth-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; 
-  text-align: center;
   width: 100%;
-  max-width: 450px;
-  padding: 20px;
-  min-height: 100%; 
-  padding-top: 5vh; 
+  text-align: center;
+  padding: 20px 0; /* Padding vertical */
 }
 
 .auth-header {
@@ -38,7 +44,8 @@ ion-content.auth-background {
 }
 
 .auth-logo {
-  background: var(--ion-color-primary);
+  /* Usa tu color primario */
+  background: var(--ion-color-primary); 
   width: 80px;
   height: 80px;
   border-radius: 50%;
@@ -48,70 +55,108 @@ ion-content.auth-background {
   margin: 0 auto 16px auto;
   font-size: 3rem;
   font-weight: bold;
-  color: white;
-}
-
-// --- Estilos para la Animación de Carga Personalizada ---
-.custom-loading {
-  --background: rgba(30, 41, 59, 0.8);
-  --spinner-color: var(--ion-color-primary);
-  --border-radius: 16px;
-  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  /* Usa el contraste de tu color primario (blanco) */
+  color: var(--ion-color-primary-contrast); 
 }
 
 .auth-app-title {
   font-size: 2rem;
   font-weight: bold;
   margin-bottom: 8px;
+  /* Usa el color de texto principal de tu tema */
+  color: var(--ion-text-color); 
 }
 
 .auth-app-subtitle {
   font-size: 1rem;
-  color: rgba(255, 255, 255, 0.7);
+  /* Usamos un RGBA del color de texto. Esto funciona
+    perfectamente en tu tema oscuro (blanco transparente) 
+    y en tu tema claro (texto oscuro transparente).
+  */
+  color: rgba(var(--ion-text-color-rgb), 0.7);
   margin-bottom: 30px;
 }
 
 .auth-form-card {
-  background: var(--ion-toolbar-background);
+  /* Usa el fondo de tus barras de herramientas/tarjetas */
+  background: var(--ion-toolbar-background); 
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   padding: 25px;
   width: 100%;
-}
-
-.segment-tabs {
-  --background: var(--ion-toolbar-background);
-  --background-checked: var(--ion-color-primary);
-  --color: rgba(255, 255, 255, 0.7);
-  --color-checked: #FFFFFF;
-  border-radius: 12px;
-  margin-bottom: 25px;
-
-  ion-segment-button {
-    text-transform: none;
-    font-weight: 600;
+  text-align: left;
+  
+  /* Tu tema claro ya define una sombra, así que 
+    la ponemos solo para el tema oscuro.
+  */
+  body:not(.light-theme) & {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   }
 }
 
+/* Título para la tarjeta (reemplaza al segment) */
+.auth-form-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: var(--ion-text-color);
+}
+
+/* Pie de página para cambiar entre Login/Register */
+.auth-switch-footer {
+  margin-top: 24px;
+  text-align: center;
+  
+  span {
+    color: rgba(var(--ion-text-color-rgb), 0.7);
+  }
+
+  ion-button {
+    text-transform: none; // Quita las mayúsculas
+    font-size: 0.95rem;
+    margin-top: -5px; // Ajuste visual
+  }
+}
+
+/* Botón de enlace con negrita (para el footer) */
+.link-button-bold {
+  --color: var(--ion-color-primary);
+  font-weight: 700;
+}
+
+/* --- ESTILOS COMUNES DE FORMULARIO --- */
+
 .auth-item {
-  --background: var(--ion-item-background);
+  /* Usa el fondo de tus items */
+  --background: var(--ion-item-background); 
   --border-radius: 12px;
   margin-bottom: 15px;
   --padding-start: 15px;
   --highlight-color-focused: var(--ion-color-primary);
 
   ion-input {
-    --placeholder-color: rgba(255, 255, 255, 0.5);
+    --placeholder-color: rgba(var(--ion-text-color-rgb), 0.5);
   }
 
   ion-icon, lucide-icon {
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(var(--ion-text-color-rgb), 0.7);
     margin-right: 10px;
   }
 }
 
+/* Mensajes de error para los formularios */
+.error-message {
+  text-align: left;
+  margin-left: 16px;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+}
+
 .main-button {
   --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
   --border-radius: 12px;
   height: 48px;
   font-size: 1.1rem;
@@ -122,8 +167,16 @@ ion-content.auth-background {
 }
 
 .link-button {
-  color: var(--ion-color-primary);
+  --color: var(--ion-color-primary);
   text-transform: none;
   font-size: 0.95rem;
   margin-top: 10px;
+}
+
+/* --- Estilos para la Animación de Carga Personalizada --- */
+.custom-loading {
+  --background: rgba(var(--ion-background-color-rgb), 0.8);
+  --spinner-color: var(--ion-color-primary);
+  --border-radius: 16px;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
