@@ -1,13 +1,18 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard'; // 1. Se importa el guardián
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  // --- Rutas Públicas (Cualquiera puede acceder) ---
   {
+    // 1. CAMBIO: La ruta raíz ahora redirige a 'welcome'
     path: '',
-    redirectTo: 'login', 
+    redirectTo: 'welcome', 
     pathMatch: 'full'
+  },
+  {
+    // 2. RUTA 'splash' ELIMINADA
+    path: 'welcome',
+    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
   },
   {
     path: 'login',
@@ -21,22 +26,27 @@ const routes: Routes = [
     path: 'forgot-password',
     loadChildren: () => import('./auth/forgot-password/forgot-password.module').then( m => m.ForgotPasswordPageModule)
   },
-
-  // --- Rutas Protegidas (Requieren inicio de sesión) ---
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuard] // 2. Se aplica el guardián aquí
+    canActivate: [AuthGuard] // Protegido por el guard
   },
   {
-    path: 'not-found',
+    path: 'post-job',
+    loadChildren: () => import('./post-job/post-job.module').then( m => m.PostJobPageModule),
+    canActivate: [AuthGuard] // Protegido por el guard
+  },
+  {
+    // La página 404 se mantiene al final
+    path: '**',
     loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
   },
-
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
+  imports: [
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

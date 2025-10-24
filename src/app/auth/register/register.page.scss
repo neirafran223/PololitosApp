@@ -5,3 +5,9 @@
     margin-bottom: 10px;
     font-size: 0.8rem;
   }
+  /* Estilos para que el header sea transparente */
+ion-header {
+  ion-toolbar {
+    --background: transparent;
+  }
+}

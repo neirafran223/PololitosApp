@@ -1,3 +1,11 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/welcome"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true" class="auth-background">
   <div class="auth-container">
 
@@ -28,13 +36,6 @@
       
       <ion-button routerLink="/forgot-password" fill="clear" expand="block" class="link-button">
         ¿Olvidaste tu contraseña?
-      </ion-button>
-    </div>
-
-    <div class="auth-switch-footer">
-      <span>¿No tienes una cuenta?</span>
-      <ion-button fill="clear" routerLink="/register" class="link-button-bold">
-        Regístrate
       </ion-button>
     </div>
 

@@ -1,0 +1,6 @@
+/* Estilos para que el header sea transparente */
+ion-header {
+  ion-toolbar {
+    --background: transparent;
+  }
+}

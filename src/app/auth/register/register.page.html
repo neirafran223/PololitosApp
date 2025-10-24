@@ -1,3 +1,11 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/welcome"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content [fullscreen]="true" class="auth-background">
   <div class="auth-container">
     <div class="auth-header">
@@ -10,6 +18,7 @@
       <h2 class="auth-form-title">Crear Cuenta</h2>
 
       <form [formGroup]="registerForm" (ngSubmit)="register()">
+        
         <ion-item class="auth-item">
           <lucide-icon name="user" slot="start"></lucide-icon>
           <ion-input formControlName="firstName" placeholder="Nombre"></ion-input>
@@ -64,18 +73,11 @@
         <div *ngIf="shouldShowError(registerForm.get('confirmPassword')) || (registerForm.hasError('passwordsMismatch') && registerForm.get('confirmPassword')?.touched)" class="error-message">
           <ion-text color="danger">Las contraseñas no coinciden.</ion-text>
         </div>
+        
         <ion-button type="submit" expand="block" class="main-button" [disabled]="registerForm.invalid">
           Crear Cuenta
         </ion-button>
       </form>
     </div>
-
-    <div class="auth-switch-footer">
-      <span>¿Ya tienes una cuenta?</span>
-      <ion-button fill="clear" routerLink="/login" class="link-button-bold">
-        Inicia sesión
-      </ion-button>
-    </div>
-
   </div>
 </ion-content>
