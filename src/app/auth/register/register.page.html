@@ -21,60 +21,31 @@
         
         <ion-item class="auth-item">
           <lucide-icon name="user" slot="start"></lucide-icon>
-          <ion-input formControlName="firstName" placeholder="Nombre"></ion-input>
+          <ion-input formControlName="fullName" placeholder="Nombre Completo"></ion-input>
         </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('firstName'))" class="error-message">
-          <ion-text color="danger">El nombre es requerido.</ion-text>
-        </div>
-        <ion-item class="auth-item">
-          <lucide-icon name="user" slot="start"></lucide-icon>
-          <ion-input formControlName="lastName" placeholder="Apellido"></ion-input>
-        </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('lastName'))" class="error-message">
-          <ion-text color="danger">El apellido es requerido.</ion-text>
-        </div>
         <ion-item class="auth-item">
           <lucide-icon name="at-sign" slot="start"></lucide-icon>
           <ion-input formControlName="username" placeholder="Nombre de usuario"></ion-input>
         </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('username'))" class="error-message">
-          <ion-text color="danger" *ngIf="registerForm.get('username')?.hasError('required')">El nombre de usuario es requerido.</ion-text>
-          <ion-text color="danger" *ngIf="registerForm.get('username')?.hasError('pattern')">Solo letras, números y guion bajo.</ion-text>
-        </div>
         <ion-item class="auth-item">
-          <lucide-icon name="hash" slot="start"></lucide-icon>
-          <ion-input formControlName="rut" placeholder="RUT (ej: 12.345.678-9)" (ionInput)="onRutInput($event)"></ion-input>
+          <lucide-icon name="phone" slot="start"></lucide-icon>
+          <ion-input formControlName="phoneNumber" type="tel" placeholder="Teléfono (ej: 912345678)" maxlength="9"></ion-input>
         </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('rut'))" class="error-message">
-          <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('required')">El RUT es requerido.</ion-text>
-          <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('invalidRut')">El RUT no es válido.</ion-text>
-          <ion-text color="danger" *ngIf="registerForm.get('rut')?.hasError('invalidRange')">RUT fuera de rango (1.0M-25.0M).</ion-text>
-        </div>
         <ion-item class="auth-item">
           <lucide-icon name="mail" slot="start"></lucide-icon>
           <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
         </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('email'))" class="error-message">
-          <ion-text color="danger">El correo no es válido.</ion-text>
-        </div>
         <ion-item class="auth-item">
           <lucide-icon name="lock" slot="start"></lucide-icon>
           <ion-input #passwordInput formControlName="password" type="password" placeholder="Contraseña"></ion-input>
           <ion-icon #eyeIcon name="eye-outline" slot="end" (click)="togglePasswordVisibility(passwordInput, eyeIcon)"></ion-icon>
         </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('password'))" class="error-message">
-          <ion-text color="danger">La contraseña debe tener al menos 6 caracteres.</ion-text>
-        </div>
         <ion-item class="auth-item">
           <lucide-icon name="lock" slot="start"></lucide-icon>
           <ion-input #confirmPasswordInput formControlName="confirmPassword" type="password" placeholder="Confirmar contraseña"></ion-input>
           <ion-icon #confirmEyeIcon name="eye-outline" slot="end" (click)="togglePasswordVisibility(confirmPasswordInput, confirmEyeIcon)"></ion-icon>
         </ion-item>
-        <div *ngIf="shouldShowError(registerForm.get('confirmPassword')) || (registerForm.hasError('passwordsMismatch') && registerForm.get('confirmPassword')?.touched)" class="error-message">
-          <ion-text color="danger">Las contraseñas no coinciden.</ion-text>
-        </div>
-        
-        <ion-button type="submit" expand="block" class="main-button" [disabled]="registerForm.invalid">
+        <ion-button type="submit" expand="block" class="main-button">
           Crear Cuenta
         </ion-button>
       </form>

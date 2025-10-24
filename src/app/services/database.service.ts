@@ -3,16 +3,17 @@ import { Capacitor } from '@capacitor/core';
 import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { Storage } from '@ionic/storage-angular';
 
+// --- INTERFAZ DE USUARIO MODIFICADA ---
 export interface UserRecord {
   id?: number;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   username: string;
-  rut: string;
+  phoneNumber: string;
   email: string;
   password: string;
 }
 
+// --- INTERFAZ DE TRABAJO (SIN CAMBIOS) ---
 export interface JobRecord {
   id?: number;
   title: string;
@@ -59,18 +60,19 @@ export class DatabaseService {
 
         await connection.open();
 
+        // --- DEFINICIÓN DE TABLA USERS MODIFICADA ---
         await connection.execute(`
           CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            firstName TEXT,
-            lastName TEXT,
-            username TEXT UNIQUE,
-            rut TEXT,
-            email TEXT UNIQUE,
-            password TEXT
+            fullName TEXT NOT NULL,
+            username TEXT UNIQUE NOT NULL,
+            phoneNumber TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL
           );
         `);
 
+        // --- TABLA SESSION (SIN CAMBIOS) ---
         await connection.execute(`
           CREATE TABLE IF NOT EXISTS session (
             id INTEGER PRIMARY KEY CHECK (id = 0),
@@ -79,6 +81,7 @@ export class DatabaseService {
           );
         `);
 
+        // --- TABLA JOBS (SIN CAMBIOS) ---
         await connection.execute(`
           CREATE TABLE IF NOT EXISTS jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -255,14 +258,15 @@ export class DatabaseService {
     return users.some(u => u.email.toLowerCase() === normalizedEmail || u.username.toLowerCase() === normalizedUsername);
   }
 
+  // --- MÉTODO CREAR USUARIO MODIFICADO ---
   async createUser(user: UserRecord): Promise<UserRecord | null> {
     await this.ensureInitialized();
 
     if (this.sqliteDb) {
       const result = await this.sqliteDb.run(
-        `INSERT INTO users (firstName, lastName, username, rut, email, password)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [user.firstName, user.lastName, user.username, user.rut, user.email, user.password]
+        `INSERT INTO users (fullName, username, phoneNumber, email, password)
+         VALUES (?, ?, ?, ?, ?)`,
+        [user.fullName, user.username, user.phoneNumber, user.email, user.password]
       );
 
       if (result.changes?.lastId) {
@@ -280,6 +284,7 @@ export class DatabaseService {
     return record;
   }
 
+  // --- MÉTODO ACTUALIZAR USUARIO MODIFICADO ---
   async updateUser(user: Partial<UserRecord> & { id: number }): Promise<UserRecord | null> {
     await this.ensureInitialized();
 
@@ -287,7 +292,8 @@ export class DatabaseService {
       const columns: string[] = [];
       const values: any[] = [];
 
-      (['firstName', 'lastName', 'username', 'rut', 'email', 'password'] as const).forEach(key => {
+      // Array de campos actualizado
+      (['fullName', 'username', 'phoneNumber', 'email', 'password'] as const).forEach(key => {
         if (user[key] !== undefined) {
           columns.push(`${key} = ?`);
           values.push(user[key as keyof UserRecord]);

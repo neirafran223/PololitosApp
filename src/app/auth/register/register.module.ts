@@ -4,16 +4,18 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { RegisterPageRoutingModule } from './register-routing.module';
 import { RegisterPage } from './register.page';
-import { LucideAngularModule, User, Mail, Lock, AtSign, Hash } from 'lucide-angular';
+
+// 1. IMPORTA 'Phone' AQUÍ
+import { LucideAngularModule, User, Mail, Lock, AtSign, Hash, Phone } from 'lucide-angular';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     RegisterPageRoutingModule,
-    ReactiveFormsModule,
-    LucideAngularModule.pick({ User, Mail, Lock, AtSign, Hash })
+    LucideAngularModule.pick({ User, Mail, Lock, AtSign, Hash, Phone })
   ],
   declarations: [RegisterPage]
 })

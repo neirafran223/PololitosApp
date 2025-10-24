@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors }
 import { NavController, ToastController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 
-// --- Validadores personalizados (no cambian) ---
+// --- VALIDADOR DE CONTRASEÑAS (Sin cambios) ---
 export function passwordsMatchValidator(control: AbstractControl): ValidationErrors | null {
   const password = control.get('password');
   const confirmPassword = control.get('confirmPassword');
@@ -13,41 +13,25 @@ export function passwordsMatchValidator(control: AbstractControl): ValidationErr
   return null;
 }
 
-export function rutValidator(control: AbstractControl): ValidationErrors | null {
-  const rut = control.value;
-  if (!rut) return null;
-  const rutLimpio = rut.replace(/[^0-9kK]/g, '').toUpperCase();
-  if (rutLimpio.length < 2) return { invalidRut: true };
-  const cuerpo = rutLimpio.slice(0, -1);
-  const dv = rutLimpio.slice(-1);
-  const rutNumero = parseInt(cuerpo, 10); // Validación de rango
-  if (isNaN(rutNumero)) {
-    return { invalidRut: true };
-  }
-  if (rutNumero < 1000000 || rutNumero > 25000000) {
-    return { invalidRange: true };
-  } // Fin validación rango
-  let suma = 0;
-  let multiplo = 2;
-  for (let i = cuerpo.length - 1; i >= 0; i--) {
-    suma += parseInt(cuerpo.charAt(i), 10) * multiplo;
-    multiplo = multiplo < 7 ? multiplo + 1 : 2;
-  }
-  const dvEsperado = 11 - (suma % 11);
-  const dvCalculado = (dvEsperado === 11) ? '0' : (dvEsperado === 10) ? 'K' : dvEsperado.toString();
-  return dvCalculado !== dv ? { invalidRut: true } : null;
+// --- NUEVO VALIDADOR DE TELÉFONO ---
+export function phoneValidator(control: AbstractControl): ValidationErrors | null {
+  const phone = control.value;
+  if (!phone) return null; // No valida si está vacío
+  
+  // Formato chileno: 9 dígitos, empieza con 9
+  const phonePattern = /^[9]\d{8}$/; 
+  
+  return !phonePattern.test(phone) ? { invalidPhone: true } : null;
 }
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
-  standalone: false, // Se mantiene tu configuración
+  standalone: false,
 })
 export class RegisterPage implements OnInit {
   registerForm!: FormGroup;
-  
-  // Se eliminan 'segmentValue' y 'ionViewWillEnter'
 
   constructor(
     private fb: FormBuilder,
@@ -58,38 +42,25 @@ export class RegisterPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    // --- FORMULARIO MODIFICADO ---
     this.registerForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
+      fullName: ['', [Validators.required, Validators.minLength(3)]],
       username: ['', [Validators.required, Validators.pattern(/^[a-zA-Z0-9_]+$/)]],
-      rut: ['', [Validators.required, rutValidator]],
+      phoneNumber: ['', [Validators.required, phoneValidator]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
     }, { validators: passwordsMatchValidator }); 
   }
 
-  // --- FUNCIÓN AÑADIDA PARA FORMATEAR EL RUT EN TIEMPO REAL ---
-  onRutInput(event: any) {
-    const rutControl = this.registerForm.get('rut');
-    if (!rutControl) return;
+  // --- onRutInput() ELIMINADO ---
 
-    let value = event.target.value;
-    if (!value) return;
-
-    let rut = value.replace(/[^0-9kK]/g, '');
-
-    if (rut.length > 1) {
-      let body = rut.slice(0, -1);
-      const dv = rut.slice(-1).toUpperCase();
-      body = body.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      rutControl.setValue(`${body}-${dv}`, { emitEvent: false });
-    }
-  }
-
+  // --- FUNCIÓN REGISTER (MODIFICADA) ---
   async register() {
     if (this.registerForm.invalid) {
-      this.registerForm.markAllAsTouched();
+      // 1. Busca el primer error y lo muestra en el toast
+      const errorMessage = this.findFirstError();
+      this.presentToast(errorMessage, 'danger');
       return;
     }
 
@@ -100,24 +71,67 @@ export class RegisterPage implements OnInit {
     await loading.present();
 
     try {
+      // 2. Intenta registrar (el catch atrapará errores de "usuario ya existe")
       const success = await this.authService.register(this.registerForm.value);
       if (success) {
         this.navCtrl.navigateRoot('/tabs/tab1', { animated: true, animationDirection: 'forward' });
         this.presentToast('¡Registro exitoso!', 'success');
       }
-      // Se elimina el 'else' y se confía en el 'catch'
     } catch (error: any) {
-      // Manejo de errores mejorado
+      // Muestra errores de la base de datos (ej. "usuario ya existe")
       this.presentToast(error.message, 'danger');
-    }
-    finally {
+    } finally {
       loading.dismiss();
     }
   }
   
-  shouldShowError(control: AbstractControl | null): boolean {
-    if (!control) return false;
-    return control.invalid && (control.dirty || control.touched);
+  // --- shouldShowError() ELIMINADO ---
+
+  // --- NUEVA FUNCIÓN: Busca el primer error de validación ---
+  private findFirstError(): string {
+    const controls = this.registerForm.controls;
+
+    // Mapeo de nombres de control a nombres legibles
+    const fieldNames: { [key: string]: string } = {
+      fullName: 'Nombre Completo',
+      username: 'Nombre de Usuario',
+      phoneNumber: 'Teléfono',
+      email: 'Correo',
+      password: 'Contraseña',
+      confirmPassword: 'Confirmar Contraseña'
+    };
+
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        const errors = controls[name].errors;
+        if (!errors) continue;
+
+        const fieldName = fieldNames[name] || name;
+
+        if (errors['required']) {
+          return `El campo "${fieldName}" es requerido.`;
+        }
+        if (errors['minlength']) {
+          return `El campo "${fieldName}" es demasiado corto.`;
+        }
+        if (errors['email']) {
+          return 'El correo electrónico no tiene un formato válido.';
+        }
+        if (errors['pattern']) {
+          return 'El nombre de usuario solo debe contener letras, números y guion bajo.';
+        }
+        if (errors['invalidPhone']) {
+          return 'El teléfono debe tener 9 dígitos y comenzar con 9 (ej: 912345678).';
+        }
+      }
+    }
+
+    // Revisa errores a nivel de grupo (contraseñas)
+    if (this.registerForm.hasError('passwordsMismatch')) {
+      return 'Las contraseñas no coinciden.';
+    }
+
+    return 'Por favor, completa el formulario correctamente.';
   }
   
   togglePasswordVisibility(input: any, icon: any) {
@@ -127,7 +141,12 @@ export class RegisterPage implements OnInit {
   }
 
   async presentToast(message: string, color: string) {
-    const toast = await this.toastController.create({ message, duration: 3000, position: 'bottom', color });
+    const toast = await this.toastController.create({ 
+      message, 
+      duration: 3000, 
+      position: 'bottom', // El toast aparece al final de la pantalla
+      color 
+    });
     await toast.present();
   }
 }

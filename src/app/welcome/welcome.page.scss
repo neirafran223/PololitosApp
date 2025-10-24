@@ -1,41 +1,36 @@
 .welcome-page-content {
-  // 1. Usa el fondo base de tu app (definido en variables.scss)
+  // 1. Usa el fondo base de tu app
   --background: var(--ion-background-color);
-
-  // 2. Usa flexbox para dividir la pantalla en dos secciones
-  display: flex;
-  flex-direction: column;
 }
 
-// Contenedor superior (logo y texto)
+// Contenedor principal que centrará todo
 .welcome-container {
-  // 3. 'flex: 1' hace que ocupe todo el espacio sobrante (sección superior)
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  
+  // 2. Centra todo en la pantalla
+  justify-content: center; // Centra verticalmente
+  align-items: center;     // Centra horizontalmente
   text-align: center;
+  
+  height: 100%; // Ocupa toda la altura de la pantalla
   padding: 30px;
-  // Asegura que esté sobre la onda (si se superponen)
-  position: relative; 
-  z-index: 1;
 }
 
 .welcome-illustration {
-  // El ícono grande
   .welcome-icon {
     width: 100px;
     height: 100px;
     color: var(--ion-color-primary);
-    stroke-width: 1.5; // Un trazo más fino
+    stroke-width: 1.5;
   }
 }
 
 .welcome-text {
-  max-width: 350px; // Evita que el texto sea muy ancho
+  max-width: 350px;
   margin-top: 30px;
-
+  margin-bottom: 40px; // Espacio entre el texto y los botones
+  
   h1 {
     font-size: 2rem;
     font-weight: 700;
@@ -43,56 +38,16 @@
     margin-bottom: 15px;
     line-height: 1.2;
   }
-
+  
   p {
     font-size: 1rem;
-    // Usa el color de texto secundario (definido en variables.scss)
     color: var(--ion-color-medium); 
     line-height: 1.5;
   }
 }
 
-// Contenedor inferior (la "hoja" de botones)
-.welcome-bottom-sheet {
-  // 4. Usa el fondo de tarjeta/toolbar (definido en variables.scss)
-  background: var(--ion-toolbar-background);
-  width: 100%;
-  position: relative;
-  z-index: 0;
-  // Redondea las esquinas superiores para que coincida con la onda
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-  // Añadimos box-shadow aquí para que coincida con el tema claro
-  // Si tu variables.scss ya lo aplica a .auth-form-card, considera si quieres duplicarlo
-  // o crear una clase global para elementos con sombra.
-  box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.1); 
-}
-
-// Contenedor para los botones
 .welcome-actions {
-  // 5. El padding superior es grande para dejar espacio a la onda
-  padding: 60px 30px 40px 30px; 
-}
-
-// El contenedor de la onda SVG
-.wave-svg {
-  // 6. Posiciona la onda justo ENCIMA de la "hoja"
-  position: absolute;
-  bottom: 100%; // <-- Justo en el borde superior
-  left: 0;
+  // 3. Asegura que los botones ocupen el ancho del contenedor
   width: 100%;
-  // La onda debe tener el mismo ancho que la hoja, pero no es flexible en altura
-  height: 60px; // Altura fija de la onda
-
-  svg {
-    display: block; // Quita espacio en blanco por defecto del SVG
-    width: 100%;
-    height: 100%; // Ocupa toda la altura de .wave-svg
-
-    path {
-      // 7. Rellena la onda con el mismo color de la "hoja"
-      // para que parezca una sola pieza
-      fill: var(--ion-toolbar-background);
-    }
-  }
+  max-width: 350px; // Opcional: para que no sean tan anchos en tablets
 }
