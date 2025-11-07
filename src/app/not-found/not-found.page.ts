@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service'; // 1. Importa AuthService
 
 @Component({
   selector: 'app-not-found',
@@ -9,9 +10,18 @@ import { NavController } from '@ionic/angular';
 })
 export class NotFoundPage {
 
-  constructor(private navCtrl: NavController) { }
+  constructor(
+    private navCtrl: NavController,
+    private authService: AuthService
+  ) { }
+  async goHome() {
+    const isAuthenticated = await this.authService.checkAuthStatus();
 
-  goHome() {
-    this.navCtrl.navigateRoot('/tabs/tab1');
+    if (isAuthenticated) {
+      this.navCtrl.navigateRoot('/tabs/tab1');
+    } else {
+      this.navCtrl.navigateRoot('/welcome');
+    }
   }
+
 }
