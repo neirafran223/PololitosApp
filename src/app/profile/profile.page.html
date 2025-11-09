@@ -4,15 +4,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <div *ngIf="user">
+<ion-content [fullscreen]="true" class="profile-content">
+  <div *ngIf="user" class="profile-wrapper">
     <div class="profile-header">
       <div class="profile-avatar">
-        {{ getInitials(user.firstName, user.lastName) }}
+        {{ getInitials(user.fullName) }}
       </div>
       <div class="profile-info">
-        <h2>{{ user.firstName }} {{ user.lastName }}</h2>
-        <p>{{ user.email }}</p>
+        <h2>{{ user.fullName }}</h2>
+        <p class="profile-email">
+          <lucide-icon name="mail" size="14"></lucide-icon>
+          {{ user.email }}
+        </p>
+        <p class="profile-username" *ngIf="user.username">
+          <lucide-icon name="user" size="14"></lucide-icon>
+          @{{ user.username }}
+        </p>
       </div>
       <ion-button fill="clear" class="edit-button" (click)="openEditModal()">
         <lucide-icon name="pencil"></lucide-icon>
@@ -38,18 +45,34 @@
     </div>
 
     <ion-list class="menu-list" lines="none">
-      <ion-item button="true">
+      <ion-item button="true" class="menu-item">
+        <lucide-icon name="briefcase" slot="start"></lucide-icon>
         <ion-label>
           <h3>Mis Trabajos Publicados</h3>
           <p>Ver y gestionar tus publicaciones</p>
         </ion-label>
+        <lucide-icon name="chevron-right" slot="end" size="18"></lucide-icon>
       </ion-item>
-      <ion-item button="true">
+      <ion-item button="true" class="menu-item">
+        <lucide-icon name="star" slot="start"></lucide-icon>
         <ion-label>
           <h3>Calificaciones</h3>
           <p>Ver comentarios y puntuaciones</p>
         </ion-label>
+        <lucide-icon name="chevron-right" size="18" slot="end"></lucide-icon>
+      </ion-item>
+      <ion-item button="true" class="menu-item">
+        <lucide-icon name="phone" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Teléfono</h3>
+          <p>{{ user.phoneNumber || 'No registrado' }}</p>
+        </ion-label>
       </ion-item>
     </ion-list>
+  </div>
+
+  <div *ngIf="!user" class="loading-container">
+    <ion-spinner></ion-spinner>
+    <p>Cargando perfil...</p>
   </div>
 </ion-content>

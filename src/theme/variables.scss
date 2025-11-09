@@ -1,10 +1,5 @@
 :root {
-  --ion-background-color: #0B1426;
-  --ion-item-background: #1e293b;
-  --ion-toolbar-background: #0f172a;
-  --ion-text-color: #FFFFFF;
-  --ion-color-primary: #4A90E2;
-  
+  // Colores base
   --ion-background-color: #0B1426;
   --ion-background-color-rgb: 11, 20, 38;
   
@@ -12,24 +7,67 @@
   --ion-text-color-rgb: 255, 255, 255;
   
   --ion-border-color: #374151;
+  --ion-border-color-rgb: 55, 65, 81;
 
+  // Fondos de componentes
   --ion-item-background: #1e293b;
+  --ion-item-background-rgb: 30, 41, 59;
   --ion-toolbar-background: #0f172a;
   --ion-tab-bar-background: #1e293b;
 
-  --ion-color-medium: #FFFFFF; 
-
+  // Colores principales
   --ion-color-primary: #4A90E2;
   --ion-color-primary-rgb: 74, 144, 226;
   --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-shade: #3d7bc5;
+  --ion-color-primary-tint: #5c9be5;
 
   --ion-color-secondary: #50E3C2;
   --ion-color-secondary-rgb: 80, 227, 194;
   --ion-color-secondary-contrast: #000000;
+  --ion-color-secondary-shade: #46c8aa;
+  --ion-color-secondary-tint: #62e6c8;
+
+  --ion-color-medium: #8a94a6;
+  --ion-color-medium-rgb: 138, 148, 166;
+  --ion-color-medium-contrast: #ffffff;
 
   --ion-color-danger: #E74C3C;
   --ion-color-danger-rgb: 231, 76, 60;
   --ion-color-danger-contrast: #ffffff;
+
+  // Colores adicionales para diseño mejorado
+  --ion-color-success: #50E3C2;
+  --ion-color-warning: #F39C12;
+  
+  // Sombras mejoradas
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.4);
+  
+  // Sombras con color primario (para efectos especiales)
+  --shadow-primary: 0 4px 20px rgba(74, 144, 226, 0.3);
+  --shadow-secondary: 0 4px 20px rgba(80, 227, 194, 0.3);
+  
+  // Bordes redondeados
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --border-radius-xl: 20px;
+  --border-radius-full: 9999px;
+  
+  // Espaciado mejorado
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  
+  // Transiciones
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
 }
 body.light-theme {
   // 1. Azul Pastel (Acento)

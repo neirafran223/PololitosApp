@@ -353,6 +353,19 @@ export class DatabaseService {
     return users.find(u => u.email.toLowerCase() === normalized) ?? null;
   }
 
+  async getUserByUsername(username: string): Promise<UserRecord | null> {
+    await this.ensureInitialized();
+    const normalized = username.toLowerCase();
+
+    if (this.sqliteDb) {
+      const result = await this.sqliteDb.query('SELECT * FROM users WHERE LOWER(username) = ? LIMIT 1', [normalized]);
+      return result.values?.[0] ?? null;
+    }
+
+    const users: UserRecord[] = (await this.storageProxy!.get('db_users')) ?? [];
+    return users.find(u => u.username.toLowerCase() === normalized) ?? null;
+  }
+
   async updatePassword(email: string, newPassword: string): Promise<boolean> {
     await this.ensureInitialized();
     const normalized = email.toLowerCase();

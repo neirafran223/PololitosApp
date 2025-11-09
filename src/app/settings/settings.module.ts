@@ -5,7 +5,8 @@ import { IonicModule } from '@ionic/angular';
 
 import { SettingsPageRoutingModule } from './settings-routing.module';
 import { SettingsPage } from './settings.page';
-import { LucideAngularModule, Moon, Shield, Bell, LogOut } from 'lucide-angular';
+import { ChangePasswordComponentModule } from '../components/change-password/change-password.component.module';
+import { LucideAngularModule, Moon, Sun, Shield, Bell, BellRing, Mail, Smartphone, Key, ShieldCheck, HelpCircle, Info, LogOut, Palette, ChevronRight } from 'lucide-angular';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { LucideAngularModule, Moon, Shield, Bell, LogOut } from 'lucide-angular'
     FormsModule,
     IonicModule,
     SettingsPageRoutingModule,
-    LucideAngularModule.pick({ Moon, Shield, Bell, LogOut })
+    ChangePasswordComponentModule,
+    LucideAngularModule.pick({ Moon, Sun, Shield, Bell, BellRing, Mail, Smartphone, Key, ShieldCheck, HelpCircle, Info, LogOut, Palette, ChevronRight })
   ],
   declarations: [SettingsPage]
 })

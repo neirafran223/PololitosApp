@@ -16,20 +16,86 @@
   <div class="search-container">
     <ion-searchbar 
       [(ngModel)]="searchQuery" 
-      placeholder="¿Qué necesitas hoy?">
+      (ionInput)="onSearchChange($event)"
+      (ionClear)="clearSearch()"
+      placeholder="Buscar trabajos, categorías, ubicación...">
     </ion-searchbar>
   </div>
 
+  <!-- Badges de filtros activos -->
+  <div class="active-filters" *ngIf="hasActiveFilters || searchQuery">
+    <div class="filter-badges">
+      <ion-chip 
+        *ngIf="searchQuery" 
+        color="primary" 
+        (click)="clearSearch()"
+        class="filter-chip">
+        <ion-label>Búsqueda: "{{ searchQuery }}"</ion-label>
+        <ion-icon name="close-circle"></ion-icon>
+      </ion-chip>
+      
+      <ion-chip 
+        *ngFor="let category of activeFilters.categories" 
+        color="secondary"
+        class="filter-chip">
+        <ion-label>{{ category }}</ion-label>
+        <ion-icon name="close-circle" (click)="removeCategory(category)"></ion-icon>
+      </ion-chip>
+      
+      <ion-chip 
+        *ngIf="activeFilters.minPrice !== null || activeFilters.maxPrice !== null" 
+        color="tertiary"
+        class="filter-chip">
+        <ion-label>
+          ${{ activeFilters.minPrice !== null ? activeFilters.minPrice : '0' }} - 
+          ${{ activeFilters.maxPrice !== null ? activeFilters.maxPrice : '∞' }}
+        </ion-label>
+        <ion-icon name="close-circle" (click)="clearPriceFilter()"></ion-icon>
+      </ion-chip>
+      
+      <ion-chip 
+        *ngIf="activeFilters.location" 
+        color="success"
+        class="filter-chip">
+        <ion-label>{{ activeFilters.location }}</ion-label>
+        <ion-icon name="close-circle" (click)="clearLocationFilter()"></ion-icon>
+      </ion-chip>
+      
+      <ion-button 
+        fill="clear" 
+        size="small" 
+        (click)="clearFilters()"
+        class="clear-all-button">
+        Limpiar todo
+      </ion-button>
+    </div>
+  </div>
+
   <div class="list-header">
-    <h2 class="list-title">Recomendados para ti</h2>
-    <ion-button fill="clear" class="filter-button">
+    <h2 class="list-title">
+      {{ searchQuery || hasActiveFilters ? 'Resultados' : 'Recomendados para ti' }}
+      <span class="jobs-count">({{ filteredJobs.length }})</span>
+    </h2>
+    <ion-button fill="clear" class="filter-button" (click)="openFilters()">
       <lucide-icon name="sliders-horizontal" size="20"></lucide-icon>
+      <ion-badge *ngIf="hasActiveFilters" color="primary" class="filter-badge">{{ getActiveFiltersCount() }}</ion-badge>
     </ion-button>
   </div>
 
-  <div class="jobs-list">
+  <!-- Mensaje cuando no hay resultados -->
+  <div class="no-results" *ngIf="filteredJobs.length === 0">
+    <lucide-icon name="search" size="64" color="var(--ion-color-medium)"></lucide-icon>
+    <h3>No se encontraron trabajos</h3>
+    <p>Intenta ajustar tus filtros o búsqueda</p>
+    <ion-button fill="outline" (click)="clearFilters(); clearSearch()">
+      Limpiar filtros
+    </ion-button>
+  </div>
+
+  <!-- Lista de trabajos -->
+  <div class="jobs-list" *ngIf="filteredJobs.length > 0">
     <app-job-card 
-      *ngFor="let job of jobs" 
+      *ngFor="let job of filteredJobs" 
       [job]="job" 
       (click)="openJobDetails(job)">
     </app-job-card>

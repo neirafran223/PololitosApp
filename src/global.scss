@@ -80,16 +80,37 @@ ion-content.auth-background {
 .auth-form-card {
   /* Usa el fondo de tus barras de herramientas/tarjetas */
   background: var(--ion-toolbar-background); 
-  border-radius: 20px;
-  padding: 25px;
+  border-radius: var(--border-radius-xl);
+  padding: 28px;
   width: 100%;
+  max-width: 100%;
   text-align: left;
+  border: 1px solid rgba(var(--ion-border-color-rgb), 0.1);
+  box-sizing: border-box;
+  
+  @media (max-width: 480px) {
+    padding: 24px 20px;
+    border-radius: var(--border-radius-lg);
+  }
+  
+  @media (max-width: 360px) {
+    padding: 20px 16px;
+    border-radius: var(--border-radius-md);
+  }
+  
+  transition: all var(--transition-base);
   
   /* Tu tema claro ya define una sombra, así que 
     la ponemos solo para el tema oscuro.
   */
   body:not(.light-theme) & {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-xl);
+  }
+  
+  &:hover {
+    body:not(.light-theme) & {
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    }
   }
 }
 
@@ -130,18 +151,36 @@ ion-content.auth-background {
 .auth-item {
   /* Usa el fondo de tus items */
   --background: var(--ion-item-background); 
-  --border-radius: 12px;
-  margin-bottom: 15px;
-  --padding-start: 15px;
+  --border-radius: var(--border-radius-md);
+  margin-bottom: 16px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
   --highlight-color-focused: var(--ion-color-primary);
+  border: 1px solid rgba(var(--ion-border-color-rgb), 0.2);
+  transition: all var(--transition-base);
+  
+  &:focus-within {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 3px rgba(var(--ion-color-primary-rgb), 0.1);
+    transform: translateY(-1px);
+  }
 
   ion-input {
     --placeholder-color: rgba(var(--ion-text-color-rgb), 0.5);
+    --padding-start: 0;
   }
 
   ion-icon, lucide-icon {
     color: rgba(var(--ion-text-color-rgb), 0.7);
-    margin-right: 10px;
+    margin-right: 12px;
+    transition: color var(--transition-fast);
+  }
+  
+  &:focus-within {
+    ion-icon, lucide-icon {
+      color: var(--ion-color-primary);
+    }
   }
 }
 
@@ -157,13 +196,35 @@ ion-content.auth-background {
 .main-button {
   --background: var(--ion-color-primary);
   --color: var(--ion-color-primary-contrast);
-  --border-radius: 12px;
-  height: 48px;
+  --border-radius: var(--border-radius-md);
+  height: 52px;
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 600;
   margin-top: 20px;
   text-transform: none;
-  --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  --box-shadow: var(--shadow-primary);
+  transition: all var(--transition-base);
+  
+  @media (max-width: 480px) {
+    height: 50px;
+    font-size: 1.05rem;
+    margin-top: 16px;
+  }
+  
+  @media (max-width: 360px) {
+    height: 48px;
+    font-size: 1rem;
+    margin-top: 14px;
+  }
+  
+  &:hover {
+    --box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .link-button {

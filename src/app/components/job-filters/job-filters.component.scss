@@ -1,0 +1,190 @@
+.filters-content {
+  --padding-start: 20px;
+  --padding-end: 20px;
+  --padding-top: 20px;
+  --padding-bottom: 20px;
+  
+  @media (max-width: 480px) {
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+  }
+  
+  @media (max-width: 360px) {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 12px;
+  }
+}
+
+.filters-wrapper {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.filter-section {
+  margin-bottom: 32px;
+  
+  @media (max-width: 360px) {
+    margin-bottom: 24px;
+  }
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--ion-text-color);
+  margin: 0 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid rgba(var(--ion-color-primary-rgb), 0.2);
+  
+  @media (max-width: 360px) {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+  
+  lucide-icon {
+    color: var(--ion-color-primary);
+  }
+}
+
+.categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  
+  @media (max-width: 360px) {
+    gap: 8px;
+  }
+}
+
+.category-chip {
+  --background: var(--ion-item-background);
+  --color: var(--ion-text-color);
+  border: 2px solid rgba(var(--ion-border-color-rgb), 0.3);
+  transition: all var(--transition-base);
+  cursor: pointer;
+  
+  &:hover {
+    border-color: var(--ion-color-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  
+  &.selected {
+    --background: rgba(var(--ion-color-primary-rgb), 0.2);
+    --color: var(--ion-color-primary);
+    border-color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+  
+  ion-label {
+    font-weight: 500;
+  }
+  
+  lucide-icon {
+    margin-left: 6px;
+  }
+}
+
+.price-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  
+  @media (max-width: 360px) {
+    gap: 12px;
+  }
+}
+
+.price-item,
+.location-item {
+  --background: var(--ion-item-background);
+  --border-radius: var(--border-radius-md);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
+  border: 1px solid rgba(var(--ion-border-color-rgb), 0.2);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  
+  @media (max-width: 360px) {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --min-height: 52px;
+  }
+  
+  &:focus-within {
+    border-color: var(--ion-color-primary);
+    box-shadow: var(--shadow-primary);
+  }
+  
+  ion-label {
+    font-weight: 600;
+    color: var(--ion-text-color);
+    margin-bottom: 8px;
+  }
+  
+  ion-input {
+    --placeholder-color: rgba(var(--ion-text-color-rgb), 0.5);
+    font-size: 1rem;
+  }
+}
+
+.apply-button {
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --border-radius: var(--border-radius-md);
+  height: 52px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 24px;
+  --box-shadow: var(--shadow-md);
+  transition: all var(--transition-base);
+  
+  @media (max-width: 360px) {
+    height: 48px;
+    font-size: 1rem;
+    margin-top: 20px;
+  }
+  
+  &:active {
+    transform: scale(0.98);
+  }
+  
+  lucide-icon {
+    margin-right: 8px;
+  }
+}
+
+// Estilos para el modal
+::ng-deep .job-filters-modal {
+  --width: 90%;
+  --max-width: 500px;
+  --height: auto;
+  --max-height: 90vh;
+  --border-radius: var(--border-radius-xl);
+  
+  @media (max-width: 480px) {
+    --width: 95%;
+    --border-radius: var(--border-radius-lg);
+  }
+  
+  @media (max-width: 360px) {
+    --width: 100%;
+    --max-height: 100vh;
+    --border-radius: 0;
+  }
+  
+  .modal-wrapper {
+    border-radius: var(--border-radius-xl);
+    
+    @media (max-width: 360px) {
+      border-radius: 0;
+    }
+  }
+}
+

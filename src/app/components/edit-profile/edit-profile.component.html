@@ -1,28 +1,103 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()">Cancelar</ion-button>
+      <ion-button (click)="cancel()" fill="clear">
+        <lucide-icon name="x" size="24"></lucide-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title>Editar Perfil</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="save()" [strong]="true">Guardar</ion-button>
+      <ion-button 
+        (click)="save()" 
+        [disabled]="isSaving || userForm.invalid || userForm.pending || !hasChanges()" 
+        [strong]="true" 
+        fill="clear">
+        <span *ngIf="!isSaving">Guardar</span>
+        <ion-spinner *ngIf="isSaving" name="crescent" style="width: 20px; height: 20px;"></ion-spinner>
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <form *ngIf="userForm" [formGroup]="userForm">
-    <ion-item class="auth-item">
-      <lucide-icon name="user" slot="start"></lucide-icon>
-      <ion-input formControlName="firstName" placeholder="Nombre"></ion-input>
-    </ion-item>
-    <ion-item class="auth-item">
-      <lucide-icon name="user" slot="start"></lucide-icon>
-      <ion-input formControlName="lastName" placeholder="Apellido"></ion-input>
-    </ion-item>
-    <ion-item class="auth-item">
-      <lucide-icon name="mail" slot="start"></lucide-icon>
-      <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
-    </ion-item>
+<ion-content class="edit-profile-content">
+  <form *ngIf="userForm" [formGroup]="userForm" class="edit-profile-form">
+    
+    <div class="form-section">
+      <h3 class="section-title">Información Personal</h3>
+      
+      <ion-item class="form-item" [class.error]="userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched">
+        <lucide-icon name="user" slot="start"></lucide-icon>
+        <ion-input 
+          formControlName="fullName" 
+          label="Nombre Completo" 
+          labelPlacement="stacked"
+          placeholder="Ej: Juan Pérez"
+          [clearOnEdit]="false"
+          maxlength="100">
+        </ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched">
+        {{ getFieldError('fullName') }}
+      </div>
+
+      <ion-item class="form-item" [class.error]="userForm.get('username')?.invalid && userForm.get('username')?.touched" [class.pending]="userForm.get('username')?.pending">
+        <lucide-icon name="at-sign" slot="start"></lucide-icon>
+        <ion-input 
+          formControlName="username" 
+          label="Nombre de Usuario" 
+          labelPlacement="stacked"
+          placeholder="Ej: juanperez"
+          [clearOnEdit]="false"
+          maxlength="30">
+        </ion-input>
+        <ion-spinner *ngIf="userForm.get('username')?.pending" name="crescent" slot="end" style="width: 20px; height: 20px;"></ion-spinner>
+        <lucide-icon *ngIf="!userForm.get('username')?.pending && userForm.get('username')?.valid && userForm.get('username')?.dirty" name="check-circle" slot="end" size="20" style="color: var(--ion-color-success);"></lucide-icon>
+      </ion-item>
+      <div class="error-message" *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched">
+        {{ getFieldError('username') }}
+      </div>
+      <div class="success-message" *ngIf="userForm.get('username')?.valid && userForm.get('username')?.dirty && !userForm.get('username')?.pending">
+        ✓ Nombre de usuario disponible
+      </div>
+
+      <ion-item class="form-item" [class.error]="userForm.get('phoneNumber')?.invalid && userForm.get('phoneNumber')?.touched">
+        <lucide-icon name="phone" slot="start"></lucide-icon>
+        <ion-input 
+          formControlName="phoneNumber" 
+          label="Teléfono" 
+          labelPlacement="stacked"
+          placeholder="Ej: 912345678"
+          type="tel"
+          inputmode="numeric"
+          maxlength="9"
+          [clearOnEdit]="false">
+        </ion-input>
+      </ion-item>
+      <div class="error-message" *ngIf="userForm.get('phoneNumber')?.invalid && userForm.get('phoneNumber')?.touched">
+        {{ getFieldError('phoneNumber') }}
+      </div>
+
+      <ion-item class="form-item" [class.error]="userForm.get('email')?.invalid && userForm.get('email')?.touched" [class.pending]="userForm.get('email')?.pending">
+        <lucide-icon name="mail" slot="start"></lucide-icon>
+        <ion-input 
+          formControlName="email" 
+          label="Correo Electrónico" 
+          labelPlacement="stacked"
+          type="email"
+          placeholder="Ej: juan@ejemplo.com"
+          [clearOnEdit]="false"
+          maxlength="100">
+        </ion-input>
+        <ion-spinner *ngIf="userForm.get('email')?.pending" name="crescent" slot="end" style="width: 20px; height: 20px;"></ion-spinner>
+        <lucide-icon *ngIf="!userForm.get('email')?.pending && userForm.get('email')?.valid && userForm.get('email')?.dirty" name="check-circle" slot="end" size="20" style="color: var(--ion-color-success);"></lucide-icon>
+      </ion-item>
+      <div class="error-message" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+        {{ getFieldError('email') }}
+      </div>
+      <div class="success-message" *ngIf="userForm.get('email')?.valid && userForm.get('email')?.dirty && !userForm.get('email')?.pending">
+        ✓ Correo disponible
+      </div>
+    </div>
+
   </form>
 </ion-content>

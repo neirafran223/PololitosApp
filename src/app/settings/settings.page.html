@@ -4,37 +4,151 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
-  <ion-list lines="none" class="settings-list">
-    <ion-list-header>Apariencia</ion-list-header>
-    <ion-item>
-      <lucide-icon name="moon" slot="start"></lucide-icon>
-      <ion-label>
-        <h3>Tema Oscuro</h3>
-        <p>Cambiar entre modo claro y oscuro</p>
-      </ion-label>
-      <ion-toggle slot="end" [checked]="isDark" (ionChange)="onThemeToggle()"></ion-toggle>
-    </ion-item>
+<ion-content [fullscreen]="true" class="settings-content">
+  <div class="settings-wrapper">
+    
+    <!-- Información del Usuario -->
+    <div class="user-info-card" *ngIf="user">
+      <div class="user-avatar">
+        {{ getInitials(user.fullName) }}
+      </div>
+      <div class="user-details">
+        <h3>{{ user.fullName }}</h3>
+        <p>{{ user.email }}</p>
+      </div>
+    </div>
 
-    <ion-list-header>Cuenta</ion-list-header>
-    <ion-item button="true">
-      <lucide-icon name="shield" slot="start"></lucide-icon>
-      <ion-label>
-        <h3>Privacidad y Seguridad</h3>
-        <p>Gestionar tu privacidad</p>
-      </ion-label>
-    </ion-item>
-    <ion-item button="true">
-      <lucide-icon name="bell" slot="start"></lucide-icon>
-      <ion-label>
-        <h3>Notificaciones</h3>
-        <p>Configurar alertas</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+    <!-- Apariencia -->
+    <ion-list lines="none" class="settings-list">
+      <ion-list-header>
+        <lucide-icon name="palette" size="16"></lucide-icon>
+        <span>Apariencia</span>
+      </ion-list-header>
+      
+      <ion-item class="setting-item">
+        <lucide-icon [name]="isDark ? 'moon' : 'sun'" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Modo {{ isDark ? 'Oscuro' : 'Claro' }}</h3>
+          <p>Cambiar entre tema claro y oscuro</p>
+        </ion-label>
+        <ion-toggle 
+          slot="end" 
+          [checked]="isDark" 
+          (ionChange)="onThemeToggle()"
+          color="primary">
+        </ion-toggle>
+      </ion-item>
+    </ion-list>
 
-  <ion-button expand="block" class="logout-button" (click)="logout()">
-    <lucide-icon name="log-out" slot="start"></lucide-icon>
-    Cerrar Sesión
-  </ion-button>
+    <!-- Notificaciones -->
+    <ion-list lines="none" class="settings-list">
+      <ion-list-header>
+        <lucide-icon name="bell" size="16"></lucide-icon>
+        <span>Notificaciones</span>
+      </ion-list-header>
+      
+      <ion-item class="setting-item">
+        <lucide-icon name="bell-ring" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Notificaciones</h3>
+          <p>Activar o desactivar todas las notificaciones</p>
+        </ion-label>
+        <ion-toggle 
+          slot="end" 
+          [(ngModel)]="notificationsEnabled"
+          (ionChange)="onNotificationsToggle()"
+          color="primary">
+        </ion-toggle>
+      </ion-item>
+
+      <ion-item class="setting-item" [class.disabled]="!notificationsEnabled">
+        <lucide-icon name="mail" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Notificaciones por Email</h3>
+          <p>Recibir alertas por correo electrónico</p>
+        </ion-label>
+        <ion-toggle 
+          slot="end" 
+          [(ngModel)]="emailNotifications"
+          [disabled]="!notificationsEnabled"
+          (ionChange)="onEmailNotificationsToggle()"
+          color="primary">
+        </ion-toggle>
+      </ion-item>
+
+      <ion-item class="setting-item" [class.disabled]="!notificationsEnabled">
+        <lucide-icon name="smartphone" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Notificaciones Push</h3>
+          <p>Recibir notificaciones en el dispositivo</p>
+        </ion-label>
+        <ion-toggle 
+          slot="end" 
+          [(ngModel)]="pushNotifications"
+          [disabled]="!notificationsEnabled"
+          (ionChange)="onPushNotificationsToggle()"
+          color="primary">
+        </ion-toggle>
+      </ion-item>
+    </ion-list>
+
+    <!-- Cuenta y Seguridad -->
+    <ion-list lines="none" class="settings-list">
+      <ion-list-header>
+        <lucide-icon name="shield" size="16"></lucide-icon>
+        <span>Cuenta y Seguridad</span>
+      </ion-list-header>
+      
+      <ion-item button="true" class="setting-item" (click)="openChangePassword()">
+        <lucide-icon name="key" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Cambiar Contraseña</h3>
+          <p>Actualizar tu contraseña de acceso</p>
+        </ion-label>
+        <lucide-icon name="chevron-right" slot="end" size="18"></lucide-icon>
+      </ion-item>
+
+      <ion-item button="true" class="setting-item" (click)="openPrivacySettings()">
+        <lucide-icon name="shield-check" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Privacidad y Seguridad</h3>
+          <p>Gestionar tu privacidad y datos</p>
+        </ion-label>
+        <lucide-icon name="chevron-right" slot="end" size="18"></lucide-icon>
+      </ion-item>
+    </ion-list>
+
+    <!-- Ayuda y Soporte -->
+    <ion-list lines="none" class="settings-list">
+      <ion-list-header>
+        <lucide-icon name="help-circle" size="16"></lucide-icon>
+        <span>Ayuda y Soporte</span>
+      </ion-list-header>
+      
+      <ion-item button="true" class="setting-item" (click)="openHelp()">
+        <lucide-icon name="help-circle" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Ayuda y Soporte</h3>
+          <p>Preguntas frecuentes y contacto</p>
+        </ion-label>
+        <lucide-icon name="chevron-right" slot="end" size="18"></lucide-icon>
+      </ion-item>
+
+      <ion-item button="true" class="setting-item" (click)="openAbout()">
+        <lucide-icon name="info" slot="start"></lucide-icon>
+        <ion-label>
+          <h3>Acerca de</h3>
+          <p>Información de la aplicación</p>
+        </ion-label>
+        <lucide-icon name="chevron-right" slot="end" size="18"></lucide-icon>
+      </ion-item>
+    </ion-list>
+
+    <!-- Cerrar Sesión -->
+    <ion-button expand="block" class="logout-button" (click)="logout()">
+      <lucide-icon name="log-out" slot="start"></lucide-icon>
+      Cerrar Sesión
+    </ion-button>
+
+  </div>
 </ion-content>

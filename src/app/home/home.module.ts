@@ -6,7 +6,8 @@ import { HomePageRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
 import { JobCardComponentModule } from '../components/job-card/job-card.module';
 import { JobDetailsComponentModule } from '../components/job-details/job-details.module';
-import { LucideAngularModule, MapPin, Bell, SlidersHorizontal } from 'lucide-angular';
+import { JobFiltersComponentModule } from '../components/job-filters/job-filters.component.module';
+import { LucideAngularModule, MapPin, Bell, SlidersHorizontal, Search } from 'lucide-angular';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { LucideAngularModule, MapPin, Bell, SlidersHorizontal } from 'lucide-ang
     HomePageRoutingModule,
     JobCardComponentModule,
     JobDetailsComponentModule,
-    LucideAngularModule.pick({ MapPin, Bell, SlidersHorizontal })
+    JobFiltersComponentModule,
+    LucideAngularModule.pick({ MapPin, Bell, SlidersHorizontal, Search })
   ],
   declarations: [HomePage]
 })

@@ -1,0 +1,97 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" fill="clear">
+        <lucide-icon name="x" size="24"></lucide-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Filtros</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="clearFilters()" fill="clear">
+        Limpiar
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="filters-content">
+  <div class="filters-wrapper">
+    
+    <!-- Categorías -->
+    <div class="filter-section">
+      <h3 class="section-title">
+        <lucide-icon name="tag" size="20"></lucide-icon>
+        <span>Categorías</span>
+      </h3>
+      <div class="categories-grid">
+        <ion-chip 
+          *ngFor="let category of availableCategories"
+          [class.selected]="isCategorySelected(category)"
+          (click)="toggleCategory(category)"
+          class="category-chip">
+          <ion-label>{{ category }}</ion-label>
+          <lucide-icon 
+            *ngIf="isCategorySelected(category)" 
+            name="check" 
+            size="16">
+          </lucide-icon>
+        </ion-chip>
+      </div>
+    </div>
+
+    <!-- Precio -->
+    <div class="filter-section">
+      <h3 class="section-title">
+        <lucide-icon name="dollar-sign" size="20"></lucide-icon>
+        <span>Rango de Precio</span>
+      </h3>
+      <div class="price-inputs">
+        <ion-item class="price-item">
+          <ion-label position="stacked">Precio Mínimo ($)</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="filters.minPrice"
+            placeholder="0"
+            min="0">
+          </ion-input>
+        </ion-item>
+        <ion-item class="price-item">
+          <ion-label position="stacked">Precio Máximo ($)</ion-label>
+          <ion-input 
+            type="number" 
+            [(ngModel)]="filters.maxPrice"
+            placeholder="Sin límite"
+            min="0">
+          </ion-input>
+        </ion-item>
+      </div>
+    </div>
+
+    <!-- Ubicación -->
+    <div class="filter-section">
+      <h3 class="section-title">
+        <lucide-icon name="map-pin" size="20"></lucide-icon>
+        <span>Ubicación</span>
+      </h3>
+      <ion-item class="location-item">
+        <ion-label position="stacked">Buscar por ubicación</ion-label>
+        <ion-input 
+          [(ngModel)]="filters.location"
+          placeholder="Ej: Santiago, Valparaíso..."
+          type="text">
+        </ion-input>
+      </ion-item>
+    </div>
+
+    <!-- Botón Aplicar -->
+    <ion-button 
+      expand="block" 
+      class="apply-button"
+      (click)="applyFilters()">
+      <lucide-icon name="check" slot="start"></lucide-icon>
+      Aplicar Filtros
+    </ion-button>
+
+  </div>
+</ion-content>
+

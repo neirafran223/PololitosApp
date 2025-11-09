@@ -1,34 +1,190 @@
+// Contenedor del formulario con scroll y padding adecuado
+.post-job-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 100px; // Espacio para el botón sticky
+  
+  @media (max-width: 480px) {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 12px;
+  }
+  
+  @media (max-width: 360px) {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    --padding-top: 10px;
+  }
+}
+
+.form-list {
+  padding: 0;
+  margin: 0;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
 .form-item {
   --background: var(--ion-item-background);
-  --border-radius: 12px;
-  --padding-start: 15px;
+  --border-radius: var(--border-radius-md);
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --min-height: 56px;
   --highlight-color-focused: var(--ion-color-primary);
   margin-bottom: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(var(--ion-border-color-rgb), 0.2);
+  transition: all var(--transition-base);
+
+  // Responsive: reducir padding en pantallas pequeñas
+  @media (max-width: 360px) {
+    --padding-start: 12px;
+    --padding-end: 12px;
+    margin-bottom: 12px;
+  }
+
+  &:focus-within {
+    border-color: var(--ion-color-primary);
+    box-shadow: var(--shadow-primary);
+    transform: translateY(-1px);
+  }
 
   lucide-icon {
     margin-right: 10px;
-    color: rgba(var(--ion-text-color-rgb), 0.6);
+    color: var(--ion-color-primary);
+    transition: transform var(--transition-fast);
+    flex-shrink: 0;
+    
+    @media (max-width: 360px) {
+      margin-right: 8px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
+  &:focus-within lucide-icon {
+    transform: scale(1.1);
+  }
+  
+  ion-label {
+    font-weight: 600;
+    color: var(--ion-text-color);
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    
+    @media (max-width: 360px) {
+      font-size: 0.9rem;
+    }
+  }
+  
+  ion-input,
+  ion-textarea,
+  ion-select {
+    --placeholder-color: rgba(var(--ion-text-color-rgb), 0.5);
+    font-size: 1rem;
+    
+    @media (max-width: 360px) {
+      font-size: 0.95rem;
+    }
   }
 }
 
 .date-time-item {
   cursor: pointer;
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid var(--ion-color-primary);
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    opacity: 0.6;
+    
+    @media (max-width: 360px) {
+      right: 12px;
+    }
+  }
+  
   .date-display {
     width: 100%;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    font-size: 1rem;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 0.95rem;
     color: var(--ion-text-color);
+    font-weight: 500;
+    line-height: 1.4;
+    word-break: break-word;
+    
+    @media (max-width: 360px) {
+      font-size: 0.85rem;
+      padding-top: 8px;
+      padding-bottom: 8px;
+    }
+  }
+  
+  &[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
 .submit-button {
-  --background: var(--ion-color-primary);
-  --border-radius: 12px;
-  height: 50px;
+  --background: linear-gradient(135deg, var(--ion-color-primary), var(--ion-color-secondary));
+  --border-radius: var(--border-radius-md);
+  height: 52px;
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: none;
   margin-top: 24px;
+  margin-bottom: 20px;
+  --box-shadow: var(--shadow-primary);
+  transition: all var(--transition-base);
+  position: sticky;
+  bottom: 20px;
+  z-index: 10;
+  
+  // Responsive: ajustar altura y tamaño de fuente
+  @media (max-width: 480px) {
+    height: 50px;
+    font-size: 1rem;
+    margin-top: 20px;
+    margin-bottom: 16px;
+  }
+  
+  @media (max-width: 360px) {
+    height: 48px;
+    font-size: 0.95rem;
+    margin-top: 16px;
+    margin-bottom: 12px;
+  }
+  
+  &:not([disabled]):hover {
+    --box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+  
+  &:not([disabled]):active {
+    transform: translateY(0);
+  }
+  
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+// Asegurar que el contenido tenga scroll adecuado
+ion-list {
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
