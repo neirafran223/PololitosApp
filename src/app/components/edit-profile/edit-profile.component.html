@@ -1,102 +1,54 @@
 <ion-header class="ion-no-border">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()" fill="clear">
-        <lucide-icon name="x" size="24"></lucide-icon>
-      </ion-button>
+      <ion-button (click)="cancel()" color="medium">Cancelar</ion-button>
     </ion-buttons>
     <ion-title>Editar Perfil</ion-title>
     <ion-buttons slot="end">
-      <ion-button 
-        (click)="save()" 
-        [disabled]="isSaving || userForm.invalid || userForm.pending || !hasChanges()" 
-        [strong]="true" 
-        fill="clear">
-        <span *ngIf="!isSaving">Guardar</span>
-        <ion-spinner *ngIf="isSaving" name="crescent" style="width: 20px; height: 20px;"></ion-spinner>
+      <ion-button (click)="save()" [strong]="true" color="primary" [disabled]="editForm.invalid || isLoading">
+        Guardar
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="edit-profile-content">
-  <form *ngIf="userForm" [formGroup]="userForm" class="edit-profile-form">
+<ion-content class="ion-padding">
+  <form [formGroup]="editForm" (ngSubmit)="save()">
     
-    <div class="form-section">
-      <h3 class="section-title">Información Personal</h3>
-      
-      <ion-item class="form-item" [class.error]="userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched">
-        <lucide-icon name="user" slot="start"></lucide-icon>
-        <ion-input 
-          formControlName="fullName" 
-          label="Nombre Completo" 
-          labelPlacement="stacked"
-          placeholder="Ej: Juan Pérez"
-          [clearOnEdit]="false"
-          maxlength="100">
-        </ion-input>
-      </ion-item>
-      <div class="error-message" *ngIf="userForm.get('fullName')?.invalid && userForm.get('fullName')?.touched">
-        {{ getFieldError('fullName') }}
-      </div>
+    <ion-item class="input-item" lines="none">
+      <ion-label position="stacked">Nombre Completo</ion-label>
+      <ion-input formControlName="fullName" type="text" placeholder="Tu nombre"></ion-input>
+      <ion-note slot="error" *ngIf="editForm.get('fullName')?.invalid && editForm.get('fullName')?.touched">
+        El nombre es requerido (min 3 caracteres).
+      </ion-note>
+    </ion-item>
 
-      <ion-item class="form-item" [class.error]="userForm.get('username')?.invalid && userForm.get('username')?.touched" [class.pending]="userForm.get('username')?.pending">
-        <lucide-icon name="at-sign" slot="start"></lucide-icon>
-        <ion-input 
-          formControlName="username" 
-          label="Nombre de Usuario" 
-          labelPlacement="stacked"
-          placeholder="Ej: juanperez"
-          [clearOnEdit]="false"
-          maxlength="30">
-        </ion-input>
-        <ion-spinner *ngIf="userForm.get('username')?.pending" name="crescent" slot="end" style="width: 20px; height: 20px;"></ion-spinner>
-        <lucide-icon *ngIf="!userForm.get('username')?.pending && userForm.get('username')?.valid && userForm.get('username')?.dirty" name="check-circle" slot="end" size="20" style="color: var(--ion-color-success);"></lucide-icon>
-      </ion-item>
-      <div class="error-message" *ngIf="userForm.get('username')?.invalid && userForm.get('username')?.touched">
-        {{ getFieldError('username') }}
-      </div>
-      <div class="success-message" *ngIf="userForm.get('username')?.valid && userForm.get('username')?.dirty && !userForm.get('username')?.pending">
-        ✓ Nombre de usuario disponible
-      </div>
+    <ion-item class="input-item" lines="none">
+      <ion-label position="stacked">Nombre de Usuario</ion-label>
+      <ion-input formControlName="username" type="text" placeholder="@usuario"></ion-input>
+      <ion-note slot="error" *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched">
+        El usuario es requerido.
+      </ion-note>
+    </ion-item>
 
-      <ion-item class="form-item" [class.error]="userForm.get('phoneNumber')?.invalid && userForm.get('phoneNumber')?.touched">
-        <lucide-icon name="phone" slot="start"></lucide-icon>
-        <ion-input 
-          formControlName="phoneNumber" 
-          label="Teléfono" 
-          labelPlacement="stacked"
-          placeholder="Ej: 912345678"
-          type="tel"
-          inputmode="numeric"
-          maxlength="9"
-          [clearOnEdit]="false">
-        </ion-input>
-      </ion-item>
-      <div class="error-message" *ngIf="userForm.get('phoneNumber')?.invalid && userForm.get('phoneNumber')?.touched">
-        {{ getFieldError('phoneNumber') }}
-      </div>
+    <ion-item class="input-item" lines="none">
+      <ion-label position="stacked">Correo Electrónico</ion-label>
+      <ion-input formControlName="email" type="email" placeholder="ejemplo@correo.com"></ion-input>
+      <ion-note slot="error" *ngIf="editForm.get('email')?.invalid && editForm.get('email')?.touched">
+        Ingresa un correo válido.
+      </ion-note>
+    </ion-item>
 
-      <ion-item class="form-item" [class.error]="userForm.get('email')?.invalid && userForm.get('email')?.touched" [class.pending]="userForm.get('email')?.pending">
-        <lucide-icon name="mail" slot="start"></lucide-icon>
-        <ion-input 
-          formControlName="email" 
-          label="Correo Electrónico" 
-          labelPlacement="stacked"
-          type="email"
-          placeholder="Ej: juan@ejemplo.com"
-          [clearOnEdit]="false"
-          maxlength="100">
-        </ion-input>
-        <ion-spinner *ngIf="userForm.get('email')?.pending" name="crescent" slot="end" style="width: 20px; height: 20px;"></ion-spinner>
-        <lucide-icon *ngIf="!userForm.get('email')?.pending && userForm.get('email')?.valid && userForm.get('email')?.dirty" name="check-circle" slot="end" size="20" style="color: var(--ion-color-success);"></lucide-icon>
-      </ion-item>
-      <div class="error-message" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
-        {{ getFieldError('email') }}
-      </div>
-      <div class="success-message" *ngIf="userForm.get('email')?.valid && userForm.get('email')?.dirty && !userForm.get('email')?.pending">
-        ✓ Correo disponible
-      </div>
+    <ion-item class="input-item" lines="none">
+      <ion-label position="stacked">Teléfono</ion-label>
+      <ion-input formControlName="phoneNumber" type="tel" placeholder="+569..."></ion-input>
+      <ion-note slot="error" *ngIf="editForm.get('phoneNumber')?.invalid && editForm.get('phoneNumber')?.touched">
+        Número inválido.
+      </ion-note>
+    </ion-item>
+
+    <div class="spinner-container" *ngIf="isLoading">
+      <ion-spinner name="crescent"></ion-spinner>
     </div>
 
   </form>

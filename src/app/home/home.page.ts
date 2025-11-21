@@ -21,11 +21,13 @@ export interface JobFilters {
   standalone: false,
 })
 export class HomePage implements OnInit {
+  // ... (tus variables existentes se mantienen igual) ...
   user: any = null;
   allJobs: JobRecord[] = [];
   filteredJobs: JobRecord[] = [];
   searchQuery: string = '';
   userLocation: string = 'Buscando ubicación...';
+  
   activeFilters: JobFilters = {
     categories: [],
     minPrice: null,
@@ -118,19 +120,26 @@ export class HomePage implements OnInit {
   }
 
   async openFilters() {
+    // Verificación de seguridad: asegúrate de que hay categorías para mostrar
+    const availableCats = this.getAvailableCategories();
+    console.log('Abriendo filtros. Categorías disponibles:', availableCats);
+
     const modal = await this.modalController.create({
       component: JobFiltersComponent,
       componentProps: {
-        currentFilters: { ...this.activeFilters },
-        availableCategories: this.getAvailableCategories()
+        currentFilters: JSON.parse(JSON.stringify(this.activeFilters)), // Copia profunda para evitar referencias
+        availableCategories: availableCats
       },
-      cssClass: 'job-filters-modal'
+      // Eliminamos la cssClass temporalmente por si está causando problemas de visibilidad
+      // cssClass: 'job-filters-modal' 
     });
 
     await modal.present();
 
-    const { data } = await modal.onWillDismiss();
-    if (data) {
+    const { data, role } = await modal.onWillDismiss();
+
+    // Verificamos el rol 'confirm' (o lo que uses en el componente)
+    if (role === 'confirm' && data) {
       this.activeFilters = data;
       this.checkActiveFilters();
       this.applyFilters();
@@ -196,43 +205,46 @@ export class HomePage implements OnInit {
   private applyFilters() {
     let jobs = [...this.allJobs];
 
-    // Aplicar búsqueda
+    // 1. Búsqueda de texto
     if (this.searchQuery && this.searchQuery.trim() !== '') {
       const query = this.searchQuery.toLowerCase().trim();
       jobs = jobs.filter(job => 
         job.title.toLowerCase().includes(query) ||
         job.description.toLowerCase().includes(query) ||
-        job.category.toLowerCase().includes(query) ||
-        job.location.toLowerCase().includes(query)
+        (job.category && job.category.toLowerCase().includes(query)) || // Check null category
+        (job.location && job.location.toLowerCase().includes(query))
       );
     }
 
-    // Aplicar filtro de categorías
+    // 2. Categorías
     if (this.activeFilters.categories.length > 0) {
       jobs = jobs.filter(job => 
-        this.activeFilters.categories.includes(job.category)
+        job.category && this.activeFilters.categories.includes(job.category)
       );
     }
 
-    // Aplicar filtro de precio mínimo
-    if (this.activeFilters.minPrice !== null) {
-      jobs = jobs.filter(job => job.price >= this.activeFilters.minPrice!);
+    // 3. Precio Mínimo (Manejo robusto de 0 y nulos)
+    if (this.activeFilters.minPrice !== null && this.activeFilters.minPrice !== undefined && this.activeFilters.minPrice.toString() !== '') {
+       const min = Number(this.activeFilters.minPrice);
+       jobs = jobs.filter(job => job.price >= min);
     }
 
-    // Aplicar filtro de precio máximo
-    if (this.activeFilters.maxPrice !== null) {
-      jobs = jobs.filter(job => job.price <= this.activeFilters.maxPrice!);
+    // 4. Precio Máximo
+    if (this.activeFilters.maxPrice !== null && this.activeFilters.maxPrice !== undefined && this.activeFilters.maxPrice.toString() !== '') {
+       const max = Number(this.activeFilters.maxPrice);
+       jobs = jobs.filter(job => job.price <= max);
     }
 
-    // Aplicar filtro de ubicación
+    // 5. Ubicación
     if (this.activeFilters.location && this.activeFilters.location.trim() !== '') {
       const locationQuery = this.activeFilters.location.toLowerCase().trim();
       jobs = jobs.filter(job => 
-        job.location.toLowerCase().includes(locationQuery)
+        job.location && job.location.toLowerCase().includes(locationQuery)
       );
     }
 
     this.filteredJobs = jobs;
+    console.log(`Filtros aplicados. ${this.filteredJobs.length} trabajos encontrados.`);
   }
 
   async openJobDetails(job: JobRecord) {

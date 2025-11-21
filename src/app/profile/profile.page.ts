@@ -26,22 +26,24 @@ export class ProfilePage {
     this.user = await this.authService.getCurrentUser();
   }
 
+  // Este método debe estar DENTRO de la clase
   getInitials(fullName: string): string {
     if (!fullName) return '??';
     
-    const names = fullName.trim().split(' ');
-    if (names.length === 0) return '??';
+    // Usamos regex \s+ para manejar múltiples espacios correctamente
+    const names = fullName.trim().split(/\s+/);
+    if (names.length === 0 || names[0] === '') return '??';
     
     if (names.length === 1) {
       return names[0].charAt(0).toUpperCase();
     }
     
-    // Primera letra del primer nombre y primera letra del último apellido
     const first = names[0].charAt(0).toUpperCase();
     const last = names[names.length - 1].charAt(0).toUpperCase();
     return first + last;
   }
 
+  // Este método también debe estar DENTRO de la clase
   async openEditModal() {
     if (!this.user) return;
 
@@ -57,11 +59,11 @@ export class ProfilePage {
 
     const { data, role } = await modal.onWillDismiss();
     
-    if (role === 'save' && data) {
-      const updated = await this.authService.updateUser(data);
-      if (updated) {
-        await this.loadUser();
-      }
+    if (role === 'confirm' && data) { // Cambiado 'save' por 'confirm' para coincidir con el componente
+      // Actualizamos el usuario localmente sin necesidad de recargar todo si la data es completa
+      this.user = data; 
+      // Opcionalmente recargamos para asegurar sincronía
+      await this.loadUser();
     }
   }
 

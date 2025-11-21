@@ -8,8 +8,13 @@ import { JobFilters } from '../../home/home.page';
   styleUrls: ['./job-filters.component.scss'],
   standalone: false,
 })
-export class JobFiltersComponent implements OnInit {
-  @Input() currentFilters!: JobFilters;
+export class JobFiltersComponent implements OnInit{
+  @Input() currentFilters: JobFilters = {
+    categories: [],
+    minPrice: null,
+    maxPrice: null,
+    location: ''
+  };
   @Input() availableCategories: string[] = [];
 
   filters: JobFilters = {
@@ -22,9 +27,13 @@ export class JobFiltersComponent implements OnInit {
   constructor(private modalController: ModalController) {}
 
   ngOnInit() {
+    console.log('JobFiltersComponent inicializado');
+    console.log('Categorías recibidas:', this.availableCategories);
+
+    // Copia segura de los filtros recibidos
     if (this.currentFilters) {
       this.filters = {
-        categories: [...this.currentFilters.categories],
+        categories: [...(this.currentFilters.categories || [])],
         minPrice: this.currentFilters.minPrice,
         maxPrice: this.currentFilters.maxPrice,
         location: this.currentFilters.location || ''
@@ -59,7 +68,7 @@ export class JobFiltersComponent implements OnInit {
   }
 
   applyFilters() {
-    this.modalController.dismiss(this.filters, 'success');
+    // Enviamos los filtros de vuelta
+    this.modalController.dismiss(this.filters, 'confirm'); // Usar rol 'confirm' es estándar
   }
 }
-

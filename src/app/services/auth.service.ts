@@ -9,7 +9,8 @@ import { DatabaseService, UserRecord } from './database.service';
 })
 export class AuthService {
 
-  private apiUrl = 'http://127.0.0.1:8000/api'; // ajusta si corresponde
+  // Recuerda cambiar 127.0.0.1 por la IP de tu PC si pruebas en un dispositivo físico (ej: 192.168.x.x)
+  private apiUrl = 'http://127.0.0.1:8000/api'; 
 
   constructor(
     private navCtrl: NavController,
@@ -17,7 +18,10 @@ export class AuthService {
     private http: HttpClient
   ) { }
 
-  // API DRF
+  // ==========================================
+  // API DRF (Django Rest Framework)
+  // ==========================================
+
   forgotPassword(email: string): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(`${this.apiUrl}/forgot-password`, { email });
   }
@@ -35,7 +39,47 @@ export class AuthService {
     });
   }
 
-  // AUTH LOCAL (SQLite)
+  /**
+   * Cambia la contraseña en el servidor remoto (Django) y sincroniza la BD local.
+   * Se utiliza desde el componente ChangePasswordComponent.
+   */
+  async changePasswordAPI(oldPassword: string, newPassword: string): Promise<boolean> {
+    const currentUser = await this.database.getCurrentUser();
+    
+    if (!currentUser) {
+      return false;
+    }
+
+    // Si tu backend requiere Token en el header, agrégalo aquí.
+    // Por ahora enviamos un POST simple asumiendo autenticación por sesión o que el body es suficiente.
+    return new Promise((resolve) => {
+      this.http.post(`${this.apiUrl}/change-password/`, { 
+        // Ajusta estos nombres de campos según lo que espere tu serializer de Django
+        // Usualmente es 'old_password' y 'new_password'
+        old_password: oldPassword,
+        new_password: newPassword,
+        // Si tu API necesita identificar al usuario por email/id en el body:
+        user_id: currentUser.id 
+      }).subscribe({
+        next: async () => {
+          // Éxito en el servidor -> Actualizamos la base de datos local SQLite
+          if (currentUser.email) {
+            await this.updatePassword(currentUser.email, newPassword);
+          }
+          resolve(true);
+        },
+        error: (error) => {
+          console.error('Error al cambiar contraseña en API:', error);
+          resolve(false);
+        }
+      });
+    });
+  }
+
+  // ==========================================
+  // AUTH LOCAL (SQLite / Storage)
+  // ==========================================
+
   async checkAuthStatus(): Promise<boolean> {
     const user = await this.database.getCurrentUser();
     return !!user;
@@ -90,11 +134,13 @@ export class AuthService {
     return this.database.findUserByEmail(email);
   }
 
+  // Actualiza la contraseña SOLO en la base de datos local
   async updatePassword(email: string, newPassword: string): Promise<boolean> {
     const success = await this.database.updatePassword(email, newPassword);
 
     if (success) {
       const current = await this.database.getCurrentUser();
+      // Si el usuario logueado es el mismo al que se le cambió la pass, actualizamos la sesión
       if (current && current.email.toLowerCase() === email.toLowerCase()) {
         const refreshed = await this.database.getUserByEmail(email);
         if (refreshed) {

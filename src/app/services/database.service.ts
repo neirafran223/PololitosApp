@@ -26,6 +26,12 @@ export interface JobRecord {
   createdAt?: string;
 }
 
+export interface jobFilter {
+  categories: string[];
+  minPrice: number | null;
+  maxPrice: number | null;
+  location: string;
+}
 @Injectable({ providedIn: 'root' })
 export class DatabaseService {
   private sqliteDb: SQLiteDBConnection | null = null;

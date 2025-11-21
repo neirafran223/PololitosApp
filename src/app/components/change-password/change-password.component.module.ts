@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './change-password.component';
-import { LucideAngularModule, Lock, Key, Check } from 'lucide-angular';
+import { LucideAngularModule, Lock, Key, CheckCircle, X } from 'lucide-angular';
 
 @NgModule({
   declarations: [ChangePasswordComponent],
@@ -12,9 +12,8 @@ import { LucideAngularModule, Lock, Key, Check } from 'lucide-angular';
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
-    LucideAngularModule.pick({ Lock, Key, Check })
+    LucideAngularModule.pick({ Lock, Key, CheckCircle, X })
   ],
   exports: [ChangePasswordComponent]
 })
 export class ChangePasswordComponentModule {}
-
