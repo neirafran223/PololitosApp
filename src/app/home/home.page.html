@@ -13,25 +13,76 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
+  
   <div class="search-container">
     <ion-searchbar 
-      [(ngModel)]="searchQuery" 
-      placeholder="¿Qué necesitas hoy?">
+      [value]="searchQuery"
+      (ionInput)="onSearchChange($event)"
+      placeholder="¿Qué necesitas hoy?"
+      debounce="300">
     </ion-searchbar>
   </div>
 
   <div class="list-header">
     <h2 class="list-title">Recomendados para ti</h2>
-    <ion-button fill="clear" class="filter-button">
+    <ion-button fill="clear" class="filter-button" id="open-filters">
       <lucide-icon name="sliders-horizontal" size="20"></lucide-icon>
     </ion-button>
   </div>
 
   <div class="jobs-list">
+    <div *ngIf="jobs.length === 0" class="empty-state">
+      <p>No se encontraron resultados.</p>
+    </div>
+
     <app-job-card 
       *ngFor="let job of jobs" 
       [job]="job" 
       (click)="openJobDetails(job)">
     </app-job-card>
   </div>
+
+  <ion-modal trigger="open-filters" #filterModal [initialBreakpoint]="0.6" [breakpoints]="[0, 0.6]">
+    <ng-template>
+      <div class="filter-modal-content">
+        <div class="modal-header">
+          <h3>Filtros</h3>
+        </div>
+
+        <div class="filter-section">
+          <label>Categoría</label>
+          <div class="categories-grid">
+            <ion-chip 
+              *ngFor="let cat of categories" 
+              [class.selected]="selectedCategory === cat"
+              (click)="selectedCategory = cat"
+              outline="true">
+              <ion-label>{{ cat }}</ion-label>
+            </ion-chip>
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <div class="price-header">
+            <label>Rango de Precio</label>
+            <span>{{ priceRange.lower | currency:'CLP':'symbol':'1.0-0' }} - {{ priceRange.upper | currency:'CLP':'symbol':'1.0-0' }}</span>
+          </div>
+          <ion-range 
+            dualKnobs="true" 
+            min="0" 
+            max="1000000" 
+            step="5000" 
+            [(ngModel)]="priceRange"
+            color="primary">
+          </ion-range>
+        </div>
+
+        <div class="modal-actions">
+          <ion-button expand="block" fill="outline" (click)="resetFilters()">Limpiar</ion-button>
+          <ion-button expand="block" (click)="closeFilterModal()">Aplicar</ion-button>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

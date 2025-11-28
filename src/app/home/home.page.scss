@@ -71,3 +71,84 @@ ion-toolbar {
   gap: 16px;
   padding-bottom: 100px;
 }
+.empty-state {
+  text-align: center;
+  padding: 20px;
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
+}
+
+.filter-modal-content {
+  padding: 24px;
+  height: 100%;
+  background: var(--ion-background-color);
+
+  .modal-header {
+    text-align: center;
+    margin-bottom: 24px;
+    h3 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+  }
+
+  .filter-section {
+    margin-bottom: 30px;
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      color: var(--ion-text-color);
+    }
+  }
+
+  // Grid de Chips
+  .categories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    ion-chip {
+      margin: 0;
+      --background: var(--ion-item-background);
+      --color: var(--ion-text-color);
+      font-weight: 500;
+      border: 1px solid transparent;
+
+      &.selected {
+        --background: rgba(var(--ion-color-primary-rgb), 0.15);
+        --color: var(--ion-color-primary);
+        border-color: var(--ion-color-primary);
+      }
+    }
+  }
+
+  // Rango de precios
+  .price-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+
+    span {
+      font-size: 0.9rem;
+      color: var(--ion-color-primary);
+      font-weight: 600;
+    }
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 40px;
+
+    ion-button {
+      flex: 1;
+      --border-radius: 12px;
+      height: 48px;
+    }
+  }
+}

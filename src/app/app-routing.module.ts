@@ -6,13 +6,8 @@ import { PublicGuard } from './guards/public.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'welcome', 
+    redirectTo: 'login', // Ahora redirige directamente al login
     pathMatch: 'full'
-  },
-  {
-    path: 'welcome',
-    loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule),
-    canActivate: [PublicGuard]
   },
   {
     path: 'login',
@@ -32,22 +27,21 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [AuthGuard] // Protegido por el guard
+    canActivate: [AuthGuard]
   },
   {
     path: 'post-job',
     loadChildren: () => import('./post-job/post-job.module').then( m => m.PostJobPageModule),
-    canActivate: [AuthGuard] // Protegido por el guard
+    canActivate: [AuthGuard]
   },
   {
-    // La página 404 se mantiene al final
-    path: '**',
-    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
-  },  {
     path: 'message',
     loadChildren: () => import('./message/message.module').then( m => m.MessagePageModule)
   },
-
+  {
+    path: '**',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  }
 ];
 
 @NgModule({
