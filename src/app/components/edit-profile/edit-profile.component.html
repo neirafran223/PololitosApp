@@ -5,24 +5,55 @@
     </ion-buttons>
     <ion-title>Editar Perfil</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="save()" [strong]="true">Guardar</ion-button>
+      <ion-button (click)="save()" [strong]="true" [disabled]="userForm && userForm.invalid">
+        Guardar
+      </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
+  
+  <div class="avatar-edit-container">
+    <div class="avatar-wrapper" (click)="changePhoto()">
+      <img *ngIf="currentPhoto" [src]="currentPhoto" alt="Avatar" class="avatar-img" />
+      
+      <div *ngIf="!currentPhoto" class="avatar-placeholder">
+        <lucide-icon name="user" size="40" color="#888"></lucide-icon>
+      </div>
+
+      <div class="camera-icon-badge">
+        <lucide-icon name="camera" size="16" color="#fff"></lucide-icon>
+      </div>
+    </div>
+    <p class="change-photo-text">Toca para cambiar foto</p>
+  </div>
+
   <form *ngIf="userForm" [formGroup]="userForm">
-    <ion-item class="auth-item">
-      <lucide-icon name="user" slot="start"></lucide-icon>
-      <ion-input formControlName="firstName" placeholder="Nombre"></ion-input>
+    
+    <ion-item class="auth-item" lines="full">
+      <lucide-icon name="user" slot="start" size="20"></lucide-icon>
+      <ion-input formControlName="firstName" placeholder="Nombre" type="text"></ion-input>
     </ion-item>
-    <ion-item class="auth-item">
-      <lucide-icon name="user" slot="start"></lucide-icon>
-      <ion-input formControlName="lastName" placeholder="Apellido"></ion-input>
+    <div class="error-msg" *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched">
+      <ion-text color="danger">El nombre es requerido.</ion-text>
+    </div>
+
+    <ion-item class="auth-item" lines="full">
+      <lucide-icon name="user" slot="start" size="20"></lucide-icon>
+      <ion-input formControlName="lastName" placeholder="Apellido" type="text"></ion-input>
     </ion-item>
-    <ion-item class="auth-item">
-      <lucide-icon name="mail" slot="start"></lucide-icon>
+    <div class="error-msg" *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched">
+      <ion-text color="danger">El apellido es requerido.</ion-text>
+    </div>
+
+    <ion-item class="auth-item" lines="full">
+      <lucide-icon name="mail" slot="start" size="20"></lucide-icon>
       <ion-input formControlName="email" type="email" placeholder="Correo electrónico"></ion-input>
     </ion-item>
+    <div class="error-msg" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+      <ion-text color="danger">Ingresa un correo válido.</ion-text>
+    </div>
+
   </form>
 </ion-content>

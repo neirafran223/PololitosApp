@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
-import { LucideAngularModule, Pencil, Star, Award, CalendarDays } from 'lucide-angular';
 import { EditProfileComponentModule } from '../components/edit-profile/edit-profile.component.module';
+import { LucideAngularModule, Pencil, Star, Award, CalendarDays } from 'lucide-angular';
 
 @NgModule({
   imports: [
@@ -13,7 +13,7 @@ import { EditProfileComponentModule } from '../components/edit-profile/edit-prof
     FormsModule,
     IonicModule,
     ProfilePageRoutingModule,
-    EditProfileComponentModule, 
+    EditProfileComponentModule, // Importante para que funcione el modal
     LucideAngularModule.pick({ Pencil, Star, Award, CalendarDays })
   ],
   declarations: [ProfilePage]

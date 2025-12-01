@@ -3,7 +3,7 @@ import { Capacitor } from '@capacitor/core';
 import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacitor-community/sqlite';
 import { Storage } from '@ionic/storage-angular';
 
-// --- INTERFAZ DE USUARIO MODIFICADA ---
+// --- INTERFAZ DE USUARIO ACTUALIZADA (CON PHOTOURL) ---
 export interface UserRecord {
   id?: number;
   fullName: string;
@@ -11,9 +11,10 @@ export interface UserRecord {
   phoneNumber: string;
   email: string;
   password: string;
+  photoUrl?: string; // <--- Nuevo campo para la foto
 }
 
-// --- INTERFAZ DE TRABAJO (SIN CAMBIOS) ---
+// --- INTERFAZ DE TRABAJO ---
 export interface JobRecord {
   id?: number;
   title: string;
@@ -60,7 +61,9 @@ export class DatabaseService {
 
         await connection.open();
 
-        // --- DEFINICIÓN DE TABLA USERS MODIFICADA ---
+        // --- DEFINICIÓN DE TABLA USERS (CON COLUMNA PHOTOURL) ---
+        // Nota: Si la app ya estaba instalada, SQLite no agrega columnas a tablas existentes automáticamente.
+        // Tendrías que desinstalar la app o incrementar la versión de la DB para migrar.
         await connection.execute(`
           CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -68,11 +71,12 @@ export class DatabaseService {
             username TEXT UNIQUE NOT NULL,
             phoneNumber TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
+            password TEXT NOT NULL,
+            photoUrl TEXT
           );
         `);
 
-        // --- TABLA SESSION (SIN CAMBIOS) ---
+        // --- TABLA SESSION ---
         await connection.execute(`
           CREATE TABLE IF NOT EXISTS session (
             id INTEGER PRIMARY KEY CHECK (id = 0),
@@ -81,7 +85,7 @@ export class DatabaseService {
           );
         `);
 
-        // --- TABLA JOBS (SIN CAMBIOS) ---
+        // --- TABLA JOBS ---
         await connection.execute(`
           CREATE TABLE IF NOT EXISTS jobs (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -258,15 +262,15 @@ export class DatabaseService {
     return users.some(u => u.email.toLowerCase() === normalizedEmail || u.username.toLowerCase() === normalizedUsername);
   }
 
-  // --- MÉTODO CREAR USUARIO MODIFICADO ---
   async createUser(user: UserRecord): Promise<UserRecord | null> {
     await this.ensureInitialized();
 
     if (this.sqliteDb) {
+      // Se agrega photoUrl si viene en el registro, aunque normalmente es null al crear
       const result = await this.sqliteDb.run(
-        `INSERT INTO users (fullName, username, phoneNumber, email, password)
-         VALUES (?, ?, ?, ?, ?)`,
-        [user.fullName, user.username, user.phoneNumber, user.email, user.password]
+        `INSERT INTO users (fullName, username, phoneNumber, email, password, photoUrl)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [user.fullName, user.username, user.phoneNumber, user.email, user.password, user.photoUrl || null]
       );
 
       if (result.changes?.lastId) {
@@ -284,7 +288,7 @@ export class DatabaseService {
     return record;
   }
 
-  // --- MÉTODO ACTUALIZAR USUARIO MODIFICADO ---
+  // --- MÉTODO ACTUALIZAR USUARIO (AHORA SOPORTA PHOTOURL) ---
   async updateUser(user: Partial<UserRecord> & { id: number }): Promise<UserRecord | null> {
     await this.ensureInitialized();
 
@@ -292,8 +296,8 @@ export class DatabaseService {
       const columns: string[] = [];
       const values: any[] = [];
 
-      // Array de campos actualizado
-      (['fullName', 'username', 'phoneNumber', 'email', 'password'] as const).forEach(key => {
+      // Array de campos permitidos actualizado con 'photoUrl'
+      (['fullName', 'username', 'phoneNumber', 'email', 'password', 'photoUrl'] as const).forEach(key => {
         if (user[key] !== undefined) {
           columns.push(`${key} = ?`);
           values.push(user[key as keyof UserRecord]);

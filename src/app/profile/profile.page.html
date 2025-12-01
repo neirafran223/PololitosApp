@@ -7,13 +7,22 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <div *ngIf="user">
     <div class="profile-header">
-      <div class="profile-avatar">
-        {{ getInitials(user.firstName, user.lastName) }}
+      
+      <div class="profile-avatar" [class.has-image]="user.photoUrl">
+        
+        <img *ngIf="user.photoUrl; else initialTemplate" [src]="user.photoUrl" class="real-avatar-img" alt="Foto de perfil"/>
+        
+        <ng-template #initialTemplate>
+          {{ getInitials(user.firstName, user.lastName) }}
+        </ng-template>
+
       </div>
+
       <div class="profile-info">
         <h2>{{ user.firstName }} {{ user.lastName }}</h2>
         <p>{{ user.email }}</p>
       </div>
+      
       <ion-button fill="clear" class="edit-button" (click)="openEditModal()">
         <lucide-icon name="pencil"></lucide-icon>
       </ion-button>
