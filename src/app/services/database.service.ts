@@ -17,6 +17,7 @@ export interface UserRecord {
 // --- INTERFAZ DE TRABAJO ---
 export interface JobRecord {
   id?: number;
+  creatorId: number;
   title: string;
   category: string;
   description: string;
@@ -134,6 +135,7 @@ export class DatabaseService {
         category: 'Jardinería',
         description: 'Mantención de jardín, corte de pasto, poda y limpieza.',
         location: 'Reñaca, Viña del Mar',
+        creatorId: 1,
         price: 35000,
         startDateTime: jobOneStart.toISOString(),
         endDateTime: jobOneEnd.toISOString(),
@@ -144,6 +146,7 @@ export class DatabaseService {
         category: 'Educación',
         description: 'Busco profesor para reforzar contenidos de cálculo universitario.',
         location: 'Remoto',
+        creatorId: 2,
         price: 15000,
         startDateTime: jobTwoStart.toISOString(),
         endDateTime: jobTwoEnd.toISOString(),
